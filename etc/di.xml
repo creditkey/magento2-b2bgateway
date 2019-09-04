@@ -34,6 +34,7 @@
                 <item name="authorize" xsi:type="string">CreditKey\B2BGateway\Gateway\Command\AuthorizeCommand</item>
                 <item name="capture" xsi:type="string">CreditKey\B2BGateway\Gateway\Command\CaptureCommand</item>
                 <item name="void" xsi:type="string">CreditKey\B2BGateway\Gateway\Command\VoidCommand</item>
+                <item name="cancel" xsi:type="string">CreditKey\B2BGateway\Gateway\Command\CancelCommand</item>
                 <item name="refund" xsi:type="string">CreditKey\B2BGateway\Gateway\Command\RefundCommand</item>
             </argument>
         </arguments>

@@ -21,6 +21,10 @@ define(
         var data = window.checkoutConfig.payment.creditkey_gateway;
         var ckClient = new creditKey.Client(data.publicKey, data.endpoint);
 
+        var ckClient2 = new creditKey.Client('supercheapsigns_e6da3c2cc3ef4f0dbf2ce1ae59d5bca2', 'staging');
+        ckClient2.is_displayed_in_checkout([])
+          .then(res => console.log(res));
+
         quote.paymentMethod.subscribe(function(method) {
           if (method.method === 'creditkey_gateway') {
             originalOrderButton.html('<span data-bind="i18n: \'Continue with Credit Key\'">Continue with Credit Key</span>');
