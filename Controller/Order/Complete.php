@@ -137,7 +137,12 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
             $orderPayment = $order->getPayment();
             $orderPayment->setAdditionalInformation('ckOrderId', $ckOrderId);
             $orderPayment->setTransactionId($ckOrderId);
-            $orderPayment->setState('paid');
+            $orderPayment->setLastTransId($ckOrderId);
+            $orderPayment->setIsTransactionClosed(false);
+            $orderPayment->setShouldCloseParentTransaction(false);
+            $transaction = $orderPayment->addTransaction(
+                \Magento\Sales\Model\Order\Payment\Transaction::TYPE_AUTH
+            );
 
             $order->save();
 
@@ -160,6 +165,7 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
 
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setPath('checkout/onepage/success');
+        $this->logger->debug('Finished order complete controller.');
         return $resultRedirect;
     }
 }
