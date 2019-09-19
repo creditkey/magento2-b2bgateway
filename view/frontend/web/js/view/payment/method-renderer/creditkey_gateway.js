@@ -95,7 +95,7 @@ define(
                 // if valide then we call our checkout modal
                 setPaymentInformation(messageContainer, { method: quote.paymentMethod().method })
                   .then(function () {
-                    creditKey.checkout(data.redirectUrl, 'modal')
+                    creditKey.checkout(data.redirectUrl, 'redirect')
                   });
 
               }
