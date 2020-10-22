@@ -65,17 +65,6 @@ define(
               // set a default display while loading
               $('#ck-payment-title').html('loading Credit Key...');
 
-              /*var customer = customerModel;*/
-              //if (customer.isLoggedIn()) {
-                //ckClient.get_customer(customer.customerData.email, customer.customerData.id)
-                  //.then(function(res) {
-                    //console.log(res);
-                  //})
-                  //.catch(function(err) {
-                    //console.log(err);
-                  //});
-              /*}*/
-
               return ckClient.get_marketing_display(charges, "checkout", data.type, data.size)
                 .then(function(res) {
                   originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
@@ -95,7 +84,7 @@ define(
                 // if valide then we call our checkout modal
                 setPaymentInformation(messageContainer, { method: quote.paymentMethod().method })
                   .then(function () {
-                    creditKey.checkout(data.redirectUrl, 'modal')
+                    creditKey.checkout(data.redirectUrl, 'redirect')
                   });
 
               }
