@@ -62,15 +62,8 @@ define(
                 totals.base_grand_total
               );
 
-              // set a default display while loading
-              $('#ck-payment-title').html('loading Credit Key...');
-
-              return ckClient.get_marketing_display(charges, "checkout", data.type, data.size)
-                .then(function(res) {
-                  originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
-                  originalOrderButtonVal = originalOrderButton.html();
-                  $('#ck-payment-title').html(res);
-                });
+              originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
+              originalOrderButtonVal = originalOrderButton.html();
             },
             
             isDisplayed: function() {
