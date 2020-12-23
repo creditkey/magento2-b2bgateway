@@ -29,16 +29,6 @@
                   <label>Debug</label>
                   <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="creditkey_checkoutdisplay" translate="label comment" sortOrder="30" type="CreditKey\B2BGateway\Model\Form\Element\MarketingRadios" showInDefault="1" showInWebsite="1">
-                  <label>Checkout Display Type</label>
-                  <comment>Choose the style of the marketing content to display on checkout.</comment>
-                  <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Buttons</source_model>
-                </field>
-                <field id="creditkey_checkoutsize" translate="label comment" sortOrder="35" type="radios" showInDefault="1" showInWebsite="1">
-                  <label>Checkout Display Size</label>
-                  <comment>Choose the size of the marketing content to display on checkout.</comment>
-                  <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Sizes</source_model>
-                </field>
                 <group id="creditkey_productmarketing" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
                   <label>Marketing Content on Product Pages</label>
                   <attribute type="expanded">1</attribute>
