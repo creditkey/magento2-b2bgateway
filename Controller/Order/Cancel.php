@@ -13,7 +13,8 @@ class Cancel extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
      */
     public function execute()
     {
-        $this->_redirect('checkout');
-        return $this;
+        $resultRedirect = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setPath('checkout');
+        return $resultRedirect;
     }
 }
