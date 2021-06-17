@@ -24,7 +24,7 @@ define(
                 );
                 var charges = new creditKey.Charges(...config.charges);
 
-                var res =  ckClient.get_pdp_display(charges);
+                var res = ckClient.get_cart_display(charges, config.desktop, config.mobile)
                 elem.html(res);
             }
         });

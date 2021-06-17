@@ -46,7 +46,7 @@ class Marketing extends \Magento\Framework\View\Element\Template
      * @var array
      */
     private $authorizedCategories;
-    
+
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\Registry $registry
@@ -133,8 +133,6 @@ class Marketing extends \Magento\Framework\View\Element\Template
             'ckConfig' => [
                 'endpoint' => $this->config->getEndpoint(),
                 'publicKey' => $this->config->getPublicKey(),
-                'type' => $this->config->getPdpMarketingType(),
-                'size' => $this->config->getPdpMarketingSize(),
                 'charges' => $this->getCharges()
             ]
         ];

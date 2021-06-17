@@ -47,16 +47,23 @@
                     <comment>Choose the product price range to display the marketing content on.</comment>
                     <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Prices</source_model>
                   </field>
-                  <field id="type" translate="label comment" sortOrder="30" type="CreditKey\B2BGateway\Model\Form\Element\MarketingRadios" showInDefault="1" showInWebsite="1">
-                    <label>Display Type</label>
-                    <comment>Only show marketing content on products with the selected pricing.</comment>
-                    <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Buttons</source_model>
-                  </field>
-                  <field id="size" translate="label comment" sortOrder="35" type="radios" showInDefault="1" showInWebsite="1">
-                    <label>Display Size</label>
-                    <comment>Choose the size of the marketing content to display.</comment>
-                    <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Sizes</source_model>
-                  </field>
+                </group>
+                <group id="creditkey_cartmarketing" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
+                    <label>Marketing Content on Cart Pages</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="active" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="1">
+                        <label>Enabled</label>
+                        <comment>Enable this to allow our marketing content to be displayed on the selected cart pages.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="desktop" translate="label comment" sortOrder="20" type="select" showInDefault="1" showInWebsite="1">
+                        <label>Desktop</label>
+                        <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Views</source_model>
+                    </field>
+                    <field id="mobile" translate="label comment" sortOrder="20" type="select" showInDefault="1" showInWebsite="1">
+                        <label>Mobile</label>
+                        <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Views</source_model>
+                    </field>
                 </group>
             </group>
         </section>

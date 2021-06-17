@@ -22,6 +22,9 @@ class Config
     const XML_KEY_PDP_MARKETING_PRICE     = '/creditkey_productmarketing/price';
     const XML_KEY_PDP_MARKETING_TYPE      = '/creditkey_productmarketing/type';
     const XML_KEY_PDP_MARKETING_SIZE      = '/creditkey_productmarketing/size';
+    const XML_KEY_CART_MARKETING_DESKTOP  = '/creditkey_cartmarketing/desktop';
+    const XML_KEY_CART_MARKETING_MOBILE   = '/creditkey_cartmarketing/mobile';
+    const XML_KEY_CART_MARKETING_ACTIVE    = '/creditkey_cartmarketing/active';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -156,5 +159,29 @@ class Config
     public function getPdpMarketingSize()
     {
         return $this->getConfigValue(self::XML_KEY_PDP_MARKETING_SIZE);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCartMarketingDesktop()
+    {
+        return $this->getConfigValue(self::XML_KEY_CART_MARKETING_DESKTOP);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCartMarketingMobile()
+    {
+        return $this->getConfigValue(self::XML_KEY_CART_MARKETING_MOBILE);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCartMarketingEnable()
+    {
+        return $this->getConfigValue(self::XML_KEY_CART_MARKETING_ACTIVE);
     }
 }
