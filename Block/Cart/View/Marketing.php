@@ -63,8 +63,8 @@ class Marketing extends \Magento\Framework\View\Element\Template
             'ckConfig' => [
                 'endpoint' => $this->config->getEndpoint(),
                 'publicKey' => $this->config->getPublicKey(),
-                'desktop' => $this->config->getPdpMarketingType(),
-                'mobile' => $this->config->getPdpMarketingSize(),
+                'desktop' => $this->config->getCartMarketingDesktop(),
+                'mobile' => $this->config->getCartMarketingMobile(),
                 'charges' => $this->getCharges()
             ]
         ];
