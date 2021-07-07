@@ -16,11 +16,15 @@ define(
             options: globalOptions,
 
             _init: function initMarketing() {
+                var mode = 'production';
                 var elem = this.element;
                 var config = this.options.ckConfig;
+                if(config.endpoint.indexOf('staging') >= 0) {
+                    mode = 'staging';
+                }
                 var ckClient = new creditKey.Client(
                     config.publicKey,
-                    config.endpoint
+                    mode
                 );
                 var charges = new creditKey.Charges(...config.charges);
 
