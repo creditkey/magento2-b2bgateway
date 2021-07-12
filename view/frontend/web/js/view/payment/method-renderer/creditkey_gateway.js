@@ -55,22 +55,21 @@ define(
             getCustomTitle: function() {
               var totals = quote.getTotals()();
               var charges = new creditKey.Charges(
-                totals.subtotal, 
-                totals.base_shipping_amount, 
-                totals.base_tax_amount, 
-                totals.base_discount_amount, 
+                totals.subtotal,
+                totals.base_shipping_amount,
+                totals.base_tax_amount,
+                totals.base_discount_amount,
                 totals.base_grand_total
               );
-
-              originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
-              originalOrderButtonVal = originalOrderButton.html();
+                originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
+                originalOrderButtonVal = originalOrderButton.html();
             },
-            
+
             isDisplayed: function() {
               var data = window.checkoutConfig.payment.creditkey_gateway;
               return data.isCreditKeyDisplayed;
             },
-            
+
             redirectToPayment: function() {
               // validate the form
               if (this.validate() && additionalValidators.validate()) {
