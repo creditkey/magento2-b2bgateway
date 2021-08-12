@@ -1,8 +1,7 @@
 var config = {
     map: {
       '*': {
-        creditkeysdk: 'CreditKey_B2BGateway/js/creditkey-js'
+        creditkeysdk: 'https://unpkg.com/creditkey-js@latest/umd/creditkey-js.js'
       }
     }
   }
-  
