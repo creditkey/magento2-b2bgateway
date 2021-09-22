@@ -15,7 +15,7 @@ class Views implements \Magento\Framework\Option\ArrayInterface
         $options = [
             ['value' => "left", 'label' => 'Left'],
             ['value' => "right", 'label' => 'Right'],
-            ['value' => "centered", 'label' => 'Centered']
+            ['value' => "center", 'label' => 'Centered']
         ];
 
         return $options;

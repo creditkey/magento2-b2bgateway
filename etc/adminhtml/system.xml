@@ -29,6 +29,12 @@
                   <label>Debug</label>
                   <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="payment_action" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment Action</label>
+                    <source_model>CreditKey\B2BGateway\Model\Source\PaymentAction</source_model>
+                    <attribute type="shared">1</attribute>
+                    <comment>This controls what happens upon checkout. 'Authorize and Capture' means an invoice will be created automatically after an order is placed.</comment>
+                </field>
                 <group id="creditkey_productmarketing" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
                   <label>Marketing Content on Product Pages</label>
                   <attribute type="expanded">1</attribute>

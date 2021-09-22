@@ -25,8 +25,17 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
     protected $quoteRepository;
 
     /**
-     * Construct
-     *
+     * @var \Magento\Sales\Model\Service\InvoiceService
+     */
+    protected $invoiceService;
+
+    /**
+     * @var \Magento\Framework\DB\TransactionFactory 
+     */
+    protected $transactionFactory;
+
+    /**
+     * Complete constructor.
      * @param \Magento\Framework\App\Action\Context $context
      * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
      * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
@@ -35,8 +44,11 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Quote\Model\QuoteManagement $quoteManagement
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRespository
+     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
+     * @param OrderSender $orderSender
      * @param \Magento\Checkout\Model\Cart $modelCart
+     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
+     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -49,12 +61,16 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
         \Magento\Quote\Model\QuoteManagement $quoteManagement,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         OrderSender $orderSender,
-        \Magento\Checkout\Model\Cart $modelCart
+        \Magento\Checkout\Model\Cart $modelCart,
+        \Magento\Sales\Model\Service\InvoiceService $invoiceService,
+        \Magento\Framework\DB\TransactionFactory $transactionFactory
     ) {
         $this->quoteManagement = $quoteManagement;
         $this->quoteRepository = $quoteRepository;
         $this->modelCart = $modelCart;
         $this->orderSender = $orderSender;
+        $this->invoiceService = $invoiceService;
+        $this->transactionFactory = $transactionFactory;
 
         parent::__construct(
             $context,
@@ -92,7 +108,7 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
         // Check that the payment is authorized
         $this->creditKeyApi->configure();
         $isAuthorized = false;
-        
+
         try {
             $isAuthorized = \CreditKey\Checkout::completeCheckout($ckOrderId);
         } catch (\Exception $e) {
@@ -149,6 +165,14 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
             try {
                 // Send the Magento Order ID and Status to Credit Key
                 \CreditKey\Orders::update($ckOrderId, $order->getState(), $order->getIncrementId(), null, null, null);
+
+                $paymentMethodInstance = $orderPayment->getMethodInstance();
+                $action = $paymentMethodInstance->getConfigPaymentAction();
+
+                if($action == \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE) {
+                    $this->captureAndCreateInvoice($order);
+                }
+
             } catch (\Exception $e) {
                 $this->logger->critical($e);
             }
@@ -167,5 +191,23 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
         $resultRedirect->setPath('checkout/onepage/success');
         $this->logger->debug('Finished order complete controller.');
         return $resultRedirect;
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function captureAndCreateInvoice(\Magento\Sales\Model\Order $order)
+    {
+        // prepare invoice and generate it
+        $invoice = $this->invoiceService->prepareInvoice($order);
+        $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE); // set to be capture offline because the capture has been done previously
+        $invoice->register();
+
+        /** @var \Magento\Framework\DB\Transaction $transaction */
+        $transaction = $this->transactionFactory->create();
+        $transaction->addObject($order)
+            ->addObject($invoice)
+            ->addObject($invoice->getOrder())->save();
     }
 }
