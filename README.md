@@ -20,6 +20,7 @@ From the Magento admin, navigate to ```Stores > Configuration > Sales > Payment 
 
 The `Marketing Content on Product Pages` section allows you to enable the Credit Key marketing content to be displayed on the selected product detail pages. You can enable/disable this feature globally, select the specific categories to allow the content to be displayed on the products belonging to said categories, and select the style of the displayed content.
 
+Payment Action can be set to ```Authorize``` or ```Authorize and Capture```. ```Authorize and Capture``` will create an invoice when an order is created. ```Authorize``` will not create an invoice when an order is created.
 ## Customization
 
 To move the location of the marketing display on the product details page you will need to modify the file `catalog_product_view.xml` from your active theme. This will most likely be located at `{magento_root}/app/design/frontend/{YourCompany}/{theme-name}/Magento_Catalog/layout/catalog_product_view.xml`. 
