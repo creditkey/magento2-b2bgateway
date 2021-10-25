@@ -25,6 +25,7 @@ class Config
     const XML_KEY_CART_MARKETING_DESKTOP  = '/creditkey_cartmarketing/desktop';
     const XML_KEY_CART_MARKETING_MOBILE   = '/creditkey_cartmarketing/mobile';
     const XML_KEY_CART_MARKETING_ACTIVE    = '/creditkey_cartmarketing/active';
+    const XML_KEY_CART_MARKETING_PRICE     = '/creditkey_cartmarketing/price';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -137,6 +138,17 @@ class Config
     public function getPdpMarketingPrice()
     {
         return $this->getConfigValue(self::XML_KEY_PDP_MARKETING_PRICE);
+    }
+
+    /**
+     * Get price of marketing content to display
+     * on cart page
+     *
+     * @return string
+     */
+    public function getCartMarketingPrice()
+    {
+        return $this->getConfigValue(self::XML_KEY_CART_MARKETING_PRICE);
     }
 
     /**
