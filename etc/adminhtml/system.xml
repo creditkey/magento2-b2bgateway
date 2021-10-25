@@ -48,10 +48,8 @@
                     <comment>Marketing content will be displayed in the product view for all products in the selected categories.</comment>
                     <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\CategoryList</source_model>
                   </field>
-                  <field id="price" translate="label comment" sortOrder="25" type="radios" showInDefault="1" showInWebsite="1">
-                    <label>Price Ranges</label>
-                    <comment>Choose the product price range to display the marketing content on.</comment>
-                    <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Prices</source_model>
+                  <field id="price" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Minimum Product Price</label>
                   </field>
                 </group>
                 <group id="creditkey_cartmarketing" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
@@ -62,11 +60,14 @@
                         <comment>Enable this to allow our marketing content to be displayed on the selected cart pages.</comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="desktop" translate="label comment" sortOrder="20" type="select" showInDefault="1" showInWebsite="1">
+                  <field id="price" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Minimum Cart Price</label>
+                  </field>
+                    <field id="desktop" translate="label comment" sortOrder="30" type="select" showInDefault="1" showInWebsite="1">
                         <label>Desktop</label>
                         <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Views</source_model>
                     </field>
-                    <field id="mobile" translate="label comment" sortOrder="20" type="select" showInDefault="1" showInWebsite="1">
+                    <field id="mobile" translate="label comment" sortOrder="40" type="select" showInDefault="1" showInWebsite="1">
                         <label>Mobile</label>
                         <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Views</source_model>
                     </field>

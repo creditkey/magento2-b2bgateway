@@ -2,7 +2,7 @@
 // @codingStandardsIgnoreFile
 /** @var $block \CreditKey\B2BGateway\Block\Cart\View\Marketing*/
 ?>
-<?php if ($block->isActiveEnable()): ?>
+<?php if ($block->isActiveEnable() && $block->isAuthorized()): ?>
     <div id="creditkey_marketing"></div>
     <script type="text/x-magento-init">
         {

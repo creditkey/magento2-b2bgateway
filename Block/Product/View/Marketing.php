@@ -2,6 +2,7 @@
 namespace CreditKey\B2BGateway\Block\Product\View;
 
 use Magento\Catalog\Model\Product;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 
 /**
  * Marketing Block
@@ -12,6 +13,11 @@ class Marketing extends \Magento\Framework\View\Element\Template
      * @var Product
      */
     private $product = null;
+
+    /**
+     * @var Configurable
+     */
+    private $configurableProduct;
 
     /**
      * Core registry
@@ -48,12 +54,15 @@ class Marketing extends \Magento\Framework\View\Element\Template
     private $authorizedCategories;
 
     /**
+     * Marketing constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \CreditKey\B2BGateway\Helper\Config $config
      * @param \Magento\Framework\Serialize\SerializerInterface $json
      * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Tax\Api\TaxCalculationInterface $taxCalculation
+     * @param Configurable $configurableProduct
      * @param array $data
      */
     public function __construct(
@@ -64,6 +73,7 @@ class Marketing extends \Magento\Framework\View\Element\Template
         \CreditKey\B2BGateway\Helper\Api $creditKeyApi,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Tax\Api\TaxCalculationInterface $taxCalculation,
+        Configurable $configurableProduct,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
@@ -72,6 +82,7 @@ class Marketing extends \Magento\Framework\View\Element\Template
         $this->creditKeyApi = $creditKeyApi;
         $this->logger = $logger;
         $this->taxCalculation = $taxCalculation;
+        $this->configurableProduct = $configurableProduct;
         parent::__construct($context, $data);
     }
 
@@ -100,9 +111,19 @@ class Marketing extends \Magento\Framework\View\Element\Template
         // Sanity check product has been loaded
         if ($product && $product->getId()) {
 
-            // Is product in selected price range?
             $price = abs($this->config->getPdpMarketingPrice());
-            if (is_numeric($price) && $price != 0 && $product->getPrice() >= $price) {
+
+            $productPrice = $product->getPrice();
+            if($product->getTypeId() == Configurable::TYPE_CODE) {
+                $childProducts = $this->configurableProduct->getUsedProducts($product);
+                foreach($childProducts as $child) {
+                    if($child->getPrice() > $productPrice){
+                        $productPrice = $child->getPrice();
+                    }
+                }
+            }
+
+            if (is_numeric($price) && $price != 0 && $productPrice < $price) {
                 return false;
             }
 

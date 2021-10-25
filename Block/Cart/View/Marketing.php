@@ -98,5 +98,21 @@ class Marketing extends \Magento\Framework\View\Element\Template
         ];
     }
 
+    /**
+     * Check if the cart subtotal is greater than Cart Minimum Price
+     *
+     * @return bool
+     */
+    public function isAuthorized()
+    {
+        $quote = $this->checkoutSession->getQuote();
+        $price = abs($this->config->getCartMarketingPrice());
 
+        // Id cart subtotal correct
+        if (is_numeric($price) && $price != 0 && $quote->getSubtotal() < $price) {
+            return false;
+        }
+
+        return true;
+    }
 }
