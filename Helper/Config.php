@@ -15,6 +15,7 @@ class Config
     const XML_KEY_ENDPOINT                = '/creditkey_endpoint';
     const XML_KEY_PUBLICKEY               = '/creditkey_publickey';
     const XML_KEY_SECRET                  = '/creditkey_sharedsecret';
+    const XML_KEY_CHECKOUT_MIN_PRICE      = '/price';
     const XML_KEY_CHECKOUT_MARKETING_TYPE = '/creditkey_checkoutdisplay';
     const XML_KEY_CHECKOUT_MARKETING_SIZE = '/creditkey_checkoutsize';
     const XML_KEY_PDP_MARKETING_ACTIVE    = '/creditkey_productmarketing/active';
@@ -85,6 +86,16 @@ class Config
     public function getSharedSecret()
     {
         return $this->getConfigValue(self::XML_KEY_SECRET);
+    }
+
+    /**
+     * Get Checkout Minimum Price
+     *
+     * @return string
+     */
+    public function getCheckoutMinPrice()
+    {
+        return $this->getConfigValue(self::XML_KEY_CHECKOUT_MIN_PRICE);
     }
 
     /**
