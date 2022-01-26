@@ -10,7 +10,7 @@
                 <merchant_gateway_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <order_status>pending_payment</order_status>
                 <payment_action>authorize</payment_action>
-                <title>Credit Key</title>
+                <title>Credit Key - Checkout</title>
                 <currency>USD</currency>
                 <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
@@ -31,6 +31,22 @@
                     <size>small</size>
                 </creditkey_productmarketing>
             </creditkey_gateway>
+            <creditkey_gateway_admin>
+                <active>0</active>
+                <title>Credit Key - Backend (CSR)</title>
+                <order_status>pending_payment</order_status>
+                <allowspecific>0</allowspecific>
+                <preselect>1</preselect>
+                <model>CreditKey\B2BGateway\Model\AdminPaymentMethodFacade</model>
+                <group>offline</group>
+                <can_use_internal>1</can_use_internal>
+                <can_capture>1</can_capture>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_void>1</can_void>
+                <can_refund>1</can_refund>
+                <can_use_checkout>0</can_use_checkout>
+                <is_gateway>1</is_gateway>
+            </creditkey_gateway_admin>
         </payment>
     </default>
 </config>
