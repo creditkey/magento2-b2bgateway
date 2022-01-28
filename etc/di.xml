@@ -62,4 +62,42 @@
         </arguments>
     </type>
 
+    <!--- -->
+
+    <virtualType name="CreditKey\B2BGateway\Model\AdminPaymentMethodFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\CreditKey\B2BGateway\Model\Ui\AdminConfigProvider::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">CreditKeyB2BGatewayAdminValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">CreditKey\B2BGateway\Gateway\Command\CommandPool</argument>
+            <argument name="isOffline" xsi:type="boolean">true</argument>
+            <argument name="canUseCheckout" xsi:type="boolean">false</argument>
+            <argument name="canUseInternal" xsi:type="boolean">true</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Configuration reader -->
+    <virtualType name="CreditKeyB2BGatewayAdminConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\CreditKey\B2BGateway\Model\Ui\AdminConfigProvider::CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Value handlers infrastructure -->
+    <virtualType name="CreditKeyB2BGatewayAdminValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">CreditKeyB2BGatewayAdminConfigValueHandler</item>
+                <item name="can_void" xsi:type="string">CreditKey\B2BGateway\Gateway\Config\CanVoidHandler</item>
+                <item name="can_cancel" xsi:type="string">CreditKey\B2BGateway\Gateway\Config\CanVoidHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CreditKeyB2BGatewayAdminConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">CreditKeyB2BGatewayAdminConfig</argument>
+        </arguments>
+    </virtualType>
+
 </config>
