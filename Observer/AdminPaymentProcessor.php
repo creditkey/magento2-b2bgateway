@@ -71,7 +71,7 @@ class AdminPaymentProcessor implements ObserverInterface
             $formData['return_url'] = str_replace('CKKEY', '%CKKEY%', $formData['return_url']);
             $formData['order_complete_url'] = str_replace('CKKEY', '%CKKEY%', $formData['order_complete_url']);
             $formData['merchant_data'] = [];
-            $formData['mode'] = 'redirect';
+            $formData['mode'] = 'link';
 
             $orderItems = $order->getAllVisibleItems();
             foreach ($orderItems as $orderItem) {
