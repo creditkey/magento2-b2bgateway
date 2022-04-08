@@ -15,14 +15,35 @@ class Data
      */
     private $logger;
 
+    /** @var $connection */
+    private $connection;
+
     /**
-     * Construct
-     *
-     * @param \Psr\Log\LoggerInterface $logger
+     * @var \Magento\Sales\Model\Service\InvoiceService
      */
-    public function __construct(LoggerInterface $logger)
+    protected $invoiceService;
+
+    /**
+     * @var \Magento\Framework\DB\TransactionFactory
+     */
+    protected $transactionFactory;
+
+    /**
+     * Data constructor.
+     * @param LoggerInterface $logger
+     * @param \Magento\Framework\App\ResourceConnection $resource
+     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
+     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
+     */
+    public function __construct(LoggerInterface $logger,
+                                \Magento\Framework\App\ResourceConnection $resource,
+                                \Magento\Sales\Model\Service\InvoiceService $invoiceService,
+                                \Magento\Framework\DB\TransactionFactory $transactionFactory)
     {
         $this->logger = $logger;
+        $this->connection = $resource->getConnection();
+        $this->invoiceService = $invoiceService;
+        $this->transactionFactory = $transactionFactory;
     }
 
     /**
@@ -57,7 +78,7 @@ class Data
         $street = $magentoAddress->getStreet();
         $address1 = null;
         $address2 = null;
-        
+
         if (count($street) >= 1) {
             $address1 = $street[0];
         }
@@ -132,5 +153,44 @@ class Data
         }
 
         return new \CreditKey\Models\Charges($total, $shippingAmount, $tax, $discount, $updatedGrandTotal);
+    }
+
+    /**
+     * @param $ckOrderId
+     * @return |null
+     */
+    public function getOrderIdByCkId($ckOrderId)
+    {
+        $sopTable = $this->connection->getTableName('sales_order_payment');
+
+        try {
+            $searchQuery = "SELECT parent_id AS order_id, JSON_UNQUOTE(JSON_EXTRACT(`additional_information`,'$.ckOrderId'))
+                            AS ckOrderId FROM  sales_order_payment HAVING ckOrderId='{$ckOrderId}';";
+            $orderData = $this->connection->fetchRow($searchQuery);
+
+            if($orderData && isset($orderData['order_id'])) {
+                return $orderData['order_id'];
+            }
+        } catch (\Exception $e) {
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     */
+    public function captureAndCreateInvoice(\Magento\Sales\Model\Order $order)
+    {
+        // prepare invoice and generate it
+        $invoice = $this->invoiceService->prepareInvoice($order);
+        $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE);
+        $invoice->register();
+
+        /** @var \Magento\Framework\DB\Transaction $transaction */
+        $transaction = $this->transactionFactory->create();
+        $transaction->addObject($order)
+            ->addObject($invoice)
+            ->addObject($invoice->getOrder())->save();
     }
 }

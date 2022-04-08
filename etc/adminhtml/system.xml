@@ -1,14 +1,18 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="payment">
-            <group id="creditkey_gateway" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="creditkey_gateway" translate="label" type="text" sortOrder="1" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
                 <label>Credit Key (Gateway)</label>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
                     <label>Title</label>
                 </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
@@ -16,62 +20,101 @@
                     <label>Sort Order</label>
                     <frontend_class>validate-number</frontend_class>
                 </field>
-                <field id="creditkey_endpoint" translate="label" sortOrder="3" type="text" showInDefault="1" showInWebsite="1">
-                  <label>API Endpoint</label>
+                <field id="creditkey_endpoint" translate="label" sortOrder="3" type="text" showInDefault="1"
+                       showInWebsite="1">
+                    <label>API Endpoint</label>
                 </field>
-                <field id="creditkey_publickey" translate="label" sortOrder="4" type="text" showInDefault="1" showInWebsite="1">
-                  <label>Public Key</label>
+                <field id="creditkey_publickey" translate="label" sortOrder="4" type="text" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Public Key</label>
                 </field>
-                <field id="creditkey_sharedsecret" translate="label" sortOrder="5" type="text" showInDefault="1" showInWebsite="1">
-                  <label>Shared Secret</label>
+                <field id="creditkey_sharedsecret" translate="label" sortOrder="5" type="text" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Shared Secret</label>
                 </field>
-                <field id="creditkey_debug" translate="label" sortOrder="10" type="select" showInDefault="1" showInWebsite="1">
-                  <label>Debug</label>
-                  <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="creditkey_debug" translate="label" sortOrder="10" type="select" showInDefault="1"
+                       showInWebsite="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="payment_action" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="payment_action" translate="label comment" type="select" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
                     <label>Payment Action</label>
                     <source_model>CreditKey\B2BGateway\Model\Source\PaymentAction</source_model>
                     <attribute type="shared">1</attribute>
-                    <comment>This controls what happens upon checkout. 'Authorize and Capture' means an invoice will be created automatically after an order is placed.</comment>
+                    <comment>This controls what happens upon checkout. 'Authorize and Capture' means an invoice will be
+                        created automatically after an order is placed.
+                    </comment>
                 </field>
-                <group id="creditkey_productmarketing" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
-                  <label>Marketing Content on Product Pages</label>
-                  <attribute type="expanded">1</attribute>
-                  <field id="active" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="1">
-                    <label>Enabled</label>
-                    <comment>Enable this to allow our marketing content to be displayed on the selected product pages.</comment>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                  </field>
-                  <field id="categories" translate="label comment" sortOrder="20" type="multiselect" showInDefault="1" showInWebsite="1">
-                    <label>Categories</label>
-                    <comment>Marketing content will be displayed in the product view for all products in the selected categories.</comment>
-                    <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\CategoryList</source_model>
-                  </field>
-                  <field id="price" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Minimum Product Price</label>
-                  </field>
-                </group>
-                <group id="creditkey_cartmarketing" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
-                    <label>Marketing Content on Cart Pages</label>
+                <field id="price" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Minimum Checkout Price</label>
+                </field>
+                <group id="creditkey_productmarketing" translate="label" showInDefault="1" showInWebsite="1"
+                       showInStore="1" sortOrder="200">
+                    <label>Marketing Content on Product Pages</label>
                     <attribute type="expanded">1</attribute>
-                    <field id="active" translate="label comment" sortOrder="10" type="select" showInDefault="1" showInWebsite="1">
+                    <field id="active" translate="label comment" sortOrder="10" type="select" showInDefault="1"
+                           showInWebsite="1">
                         <label>Enabled</label>
-                        <comment>Enable this to allow our marketing content to be displayed on the selected cart pages.</comment>
+                        <comment>Enable this to allow our marketing content to be displayed on the selected product
+                            pages.
+                        </comment>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                  <field id="price" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Minimum Cart Price</label>
-                  </field>
-                    <field id="desktop" translate="label comment" sortOrder="30" type="select" showInDefault="1" showInWebsite="1">
+                    <field id="categories" translate="label comment" sortOrder="20" type="multiselect" showInDefault="1"
+                           showInWebsite="1">
+                        <label>Categories</label>
+                        <comment>Marketing content will be displayed in the product view for all products in the
+                            selected categories.
+                        </comment>
+                        <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\CategoryList</source_model>
+                    </field>
+                    <field id="price" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1"
+                           showInStore="1">
+                        <label>Minimum Product Price</label>
+                    </field>
+                </group>
+                <group id="creditkey_cartmarketing" translate="label" showInDefault="1" showInWebsite="1"
+                       showInStore="1" sortOrder="200">
+                    <label>Marketing Content on Cart Pages</label>
+                    <attribute type="expanded">1</attribute>
+                    <field id="active" translate="label comment" sortOrder="10" type="select" showInDefault="1"
+                           showInWebsite="1">
+                        <label>Enabled</label>
+                        <comment>Enable this to allow our marketing content to be displayed on the selected cart
+                            pages.
+                        </comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="price" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                           showInStore="1">
+                        <label>Minimum Cart Price</label>
+                    </field>
+                    <field id="desktop" translate="label comment" sortOrder="30" type="select" showInDefault="1"
+                           showInWebsite="1">
                         <label>Desktop</label>
                         <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Views</source_model>
                     </field>
-                    <field id="mobile" translate="label comment" sortOrder="40" type="select" showInDefault="1" showInWebsite="1">
+                    <field id="mobile" translate="label comment" sortOrder="40" type="select" showInDefault="1"
+                           showInWebsite="1">
                         <label>Mobile</label>
                         <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Views</source_model>
                     </field>
                 </group>
+            </group>
+            <group id="creditkey_gateway_admin" translate="label" type="text" sortOrder="2" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label><![CDATA[Credit Key - Backend (CSR)]]></label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="0" canRestore="1">
+                    <label><![CDATA[Enabled]]></label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
+                    <label><![CDATA[Title]]></label>
+                </field>
             </group>
         </section>
     </system>
