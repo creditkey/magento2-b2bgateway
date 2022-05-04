@@ -100,4 +100,50 @@
         </arguments>
     </virtualType>
 
+    <!-- CreditKey Log -->
+
+    <virtualType name="CreditKeyDebug" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/creditkey.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CreditKeyLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">CreditKeyDebug</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="CreditKey\B2BGateway\Gateway\Command\InitializeCommand">
+        <arguments>
+            <argument name="logger" xsi:type="object">CreditKeyLogger</argument>
+        </arguments>
+    </type>
+    <type name="CreditKey\B2BGateway\Gateway\Command\AuthorizeCommand">
+        <arguments>
+            <argument name="logger" xsi:type="object">CreditKeyLogger</argument>
+        </arguments>
+    </type>
+    <type name="CreditKey\B2BGateway\Gateway\Command\CaptureCommand">
+        <arguments>
+            <argument name="logger" xsi:type="object">CreditKeyLogger</argument>
+        </arguments>
+    </type>
+    <type name="CreditKey\B2BGateway\Gateway\Command\VoidCommand">
+        <arguments>
+            <argument name="logger" xsi:type="object">CreditKeyLogger</argument>
+        </arguments>
+    </type>
+    <type name="CreditKey\B2BGateway\Gateway\Command\CanVoidHandler">
+        <arguments>
+            <argument name="logger" xsi:type="object">CreditKeyLogger</argument>
+        </arguments>
+    </type>
+    <type name="CreditKey\B2BGateway\Gateway\Command\RefundCommand">
+        <arguments>
+            <argument name="logger" xsi:type="object">CreditKeyLogger</argument>
+        </arguments>
+    </type>
+    <!-- CreditKey Log  -->
 </config>

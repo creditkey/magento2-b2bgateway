@@ -1,7 +1,9 @@
 <?php
+
 namespace CreditKey\B2BGateway\Helper;
 
 use Magento\Store\Model\ScopeInterface;
+use CreditKey\B2BGateway\Model\StoreConfigResolver;
 
 /**
  * Config Helper
@@ -32,29 +34,36 @@ class Config
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     private $scopeConfig;
+    /**
+     * @var StoreConfigResolver
+     */
+    private $storeConfigResolver;
 
     /**
-     * Construct
-     *
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param StoreConfigResolver $storeConfigResolver
      */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    ) {
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        StoreConfigResolver                                $storeConfigResolver
+    )
+    {
         $this->scopeConfig = $scopeConfig;
+        $this->storeConfigResolver = $storeConfigResolver;
     }
 
     /**
-     * Get config value at the specified key
-     *
-     * @param string $key
+     * @param $key
      * @return mixed
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     private function getConfigValue($key)
     {
         return $this->scopeConfig->getValue(
             self::XML_PATH_PAYMENT_CKGATEWAY . $key,
-            ScopeInterface::SCOPE_STORE
+            ScopeInterface::SCOPE_STORE,
+            $this->storeConfigResolver->getStoreId()
         );
     }
 
@@ -106,7 +115,7 @@ class Config
      */
     public function isPdpMarketingActive()
     {
-        return (boolean) $this->getConfigValue(self::XML_KEY_PDP_MARKETING_ACTIVE);
+        return (boolean)$this->getConfigValue(self::XML_KEY_PDP_MARKETING_ACTIVE);
     }
 
     /**
