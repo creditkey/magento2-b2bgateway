@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright 2019 aheadWorks. All rights reserved.
+See LICENSE.txt for license details.
+*/
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="checkout" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- Uncomment to enable compatibility with themes that do not support LESS compilation -->
+        <!-- <css src="Aheadworks_OneStepCheckout::css/aw_osc_styles.css"/> -->
+    </head>
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="actions-toolbar" xsi:type="array">
+                                    <item name="rendererList" xsi:type="array">
+                                        <item name="creditkey_gateway" xsi:type="string">CreditKey_B2BGateway/js/view/actions-toolbar/renderer/creditkey-gateway</item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
