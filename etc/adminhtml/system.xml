@@ -50,6 +50,11 @@
                        showInStore="0">
                     <label>Minimum Checkout Price</label>
                 </field>
+                <field id="checkout_mode" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Checkout Mode</label>
+                    <source_model>CreditKey\B2BGateway\Model\Source\CheckoutMode</source_model>
+                </field>
                 <group id="creditkey_productmarketing" translate="label" showInDefault="1" showInWebsite="1"
                        showInStore="1" sortOrder="200">
                     <label>Marketing Content on Product Pages</label>

@@ -17,6 +17,10 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
      * @var \Magento\Framework\App\Request\Http
      */
     private $request;
+    /**
+     * @var \CreditKey\B2BGateway\Helper\Config
+     */
+    private $config;
 
     /**
      * Construct
@@ -24,6 +28,7 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
      * @param \Magento\Framework\App\Action\Context $context
      * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
      * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
+     * @param \CreditKey\B2BGateway\Helper\Config $config
      * @param \Magento\Customer\Model\Url $customerUrl
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Customer\Model\Session $customerSession
@@ -35,6 +40,7 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
         \Magento\Framework\App\Action\Context $context,
         \CreditKey\B2BGateway\Helper\Api $creditKeyApi,
         \CreditKey\B2BGateway\Helper\Data $creditKeyData,
+        \CreditKey\B2BGateway\Helper\Config $config,
         \Magento\Customer\Model\Url $customerUrl,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Customer\Model\Session $customerSession,
@@ -44,6 +50,7 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
     ) {
         $this->urlBuilder = $urlBuilder;
         $this->request = $request;
+        $this->config = $config;
 
         parent::__construct(
             $context,
@@ -92,6 +99,10 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
         $mode = 'redirect';
         if ($this->request->getParam('modal')) {
             $mode = 'modal';
+        }
+
+        if ($this->config->getCheckoutMode()) {
+            $mode = $this->config->getCheckoutMode();
         }
 
         try {

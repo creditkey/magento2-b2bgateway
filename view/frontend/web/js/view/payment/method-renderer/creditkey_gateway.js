@@ -12,7 +12,8 @@ define(
       'Magento_Checkout/js/model/quote',
       'Magento_SalesRule/js/model/payment/discount-messages',
       'Magento_Customer/js/model/customer',
-      'creditkeysdk'
+      'creditkeysdk',
+      'CreditKey_B2BGateway/js/jquery.livequery.min'
     ],
     function ($, Component, placeOrderAction, selectPaymentMethodAction, checkoutData, additionalValidators, setPaymentInformation, quote, messageContainer, customerModel, creditKey) {
         'use strict';
@@ -73,12 +74,15 @@ define(
             redirectToPayment: function() {
               // validate the form
               if (this.validate() && additionalValidators.validate()) {
+                  var checkoutMode = window.checkoutConfig.payment.creditkey_gateway.checkoutMode;
                 // if valide then we call our checkout modal
                 setPaymentInformation(messageContainer, { method: quote.paymentMethod().method })
                   .then(function () {
-                    creditKey.checkout(data.redirectUrl, 'redirect')
+                    creditKey.checkout(data.redirectUrl, checkoutMode);
+                    $('#creditkey-iframe').livequery(function () {
+                      $('#creditkey-iframe').attr('scrolling','yes');
+                    });
                   });
-
               }
             },
 

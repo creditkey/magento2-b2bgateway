@@ -104,6 +104,7 @@ class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
                     'assetSrc' => $this->assetRepo->getUrl("CreditKey_B2BGateway::images/ck-logo-new.svg"),
                     'redirectUrl' => $this->urlBuilder->getUrl('creditkey_gateway/order/create'),
                     'publicKey' => $this->config->getPublicKey(),
+                    'checkoutMode' => $this->config->getCheckoutMode(),
                     'isCreditKeyDisplayed' => $isCreditKeyDisplayed
                 ]
             ]
