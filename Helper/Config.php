@@ -15,6 +15,7 @@ class Config
      */
     const XML_PATH_PAYMENT_CKGATEWAY      = 'payment/creditkey_gateway';
     const XML_KEY_ENDPOINT                = '/creditkey_endpoint';
+    const XML_KEY_CHECKOUT_MODE           = '/checkout_mode';
     const XML_KEY_PUBLICKEY               = '/creditkey_publickey';
     const XML_KEY_SECRET                  = '/creditkey_sharedsecret';
     const XML_KEY_CHECKOUT_MIN_PRICE      = '/price';
@@ -215,5 +216,13 @@ class Config
     public function getCartMarketingEnable()
     {
         return $this->getConfigValue(self::XML_KEY_CART_MARKETING_ACTIVE);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckoutMode()
+    {
+        return (string)$this->getConfigValue(self::XML_KEY_CHECKOUT_MODE);
     }
 }

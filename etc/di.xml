@@ -146,13 +146,4 @@
         </arguments>
     </type>
     <!-- CreditKey Log  -->
-
-    <type name="Magento\Sales\Model\Order">
-        <plugin name="credit-key-update-shipping" type="CreditKey\B2BGateway\Model\Plugin\Order" sortOrder="999"/>
-    </type>
-    <type name="CreditKey\B2BGateway\Model\Plugin\Order">
-        <arguments>
-            <argument name="logger" xsi:type="object">CreditKeyLogger</argument>
-        </arguments>
-    </type>
 </config>
