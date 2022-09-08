@@ -30,6 +30,8 @@ class Config
     const XML_KEY_CART_MARKETING_MOBILE   = '/creditkey_cartmarketing/mobile';
     const XML_KEY_CART_MARKETING_ACTIVE    = '/creditkey_cartmarketing/active';
     const XML_KEY_CART_MARKETING_PRICE     = '/creditkey_cartmarketing/price';
+    const XML_PATH_CREATE_INVOICE_AFTER_UPDATE_STATUS_ACTIVE     = '/creditkey_create_invoice_auto/active';
+    const XML_PATH_CREATE_INVOICE_AFTER_UPDATE_STATUS     = '/creditkey_create_invoice_auto/create_invoice_after_status';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -68,6 +70,25 @@ class Config
         );
     }
 
+    /**
+     * @return mixed
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getActiveMethod()
+    {
+        return $this->getConfigValue(self::XML_PATH_CREATE_INVOICE_AFTER_UPDATE_STATUS_ACTIVE);
+    }
+
+    /**
+     * @return mixed
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getStatusForCreateInvoiceAfterUpdateStatus()
+    {
+        return $this->getConfigValue(self::XML_PATH_CREATE_INVOICE_AFTER_UPDATE_STATUS);
+    }
     /**
      * Get API Endpoing
      *
