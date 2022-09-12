@@ -1,6 +1,6 @@
 {
     "name": "creditkey/b2bgateway",
-    "version": "1.0.60",
+    "version": "1.0.61",
     "description": "Credit Key integration with payment gateway",
     "require": {
         "magento/module-sales": ">=101.0.0",
