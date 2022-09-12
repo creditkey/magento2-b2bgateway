@@ -4,4 +4,7 @@
     <event name="payment_method_is_active">
         <observer name="payment_method_minimum" instance="CreditKey\B2BGateway\Observer\RestrictPaymentMethodMinimum"/>
     </event>
+    <event name="sales_order_save_before">
+        <observer name="create_invoice_after_change_ship" instance="CreditKey\B2BGateway\Observer\CreateInvoiceAfterChangeStatusToShip"/>
+     </event>
 </config>

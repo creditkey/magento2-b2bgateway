@@ -107,6 +107,20 @@
                         <source_model>CreditKey\B2BGateway\Model\Adminhtml\Source\Views</source_model>
                     </field>
                 </group>
+                <group id="creditkey_create_invoice_auto" translate="label" showInDefault="1" showInWebsite="1"
+                       showInStore="1" sortOrder="200">
+                    <label>Create Invoice Auto</label>
+                    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                           showInStore="0">
+                        <label>Enabled</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="create_invoice_after_status" translate="label" type="select" sortOrder="161" showInDefault="1" showInStore="1" showInWebsite="1">
+                        <label>Create Invoice Auto</label>
+                        <source_model>Magento\Sales\Model\ResourceModel\Order\Status\Collection</source_model>
+                        <comment>Create invoice after update status.</comment>
+                    </field>
+                </group>
             </group>
             <group id="creditkey_gateway_admin" translate="label" type="text" sortOrder="2" showInDefault="1"
                    showInWebsite="1" showInStore="1">

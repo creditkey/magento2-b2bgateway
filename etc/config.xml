@@ -31,6 +31,9 @@
                     <type>text</type>
                     <size>small</size>
                 </creditkey_productmarketing>
+                <creditkey_create_invoice_auto>
+                    <active>0</active>
+                </creditkey_create_invoice_auto>
             </creditkey_gateway>
             <creditkey_gateway_admin>
                 <active>0</active>
