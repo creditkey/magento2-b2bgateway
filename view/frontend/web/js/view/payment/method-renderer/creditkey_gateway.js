@@ -23,10 +23,12 @@ define(
         var ckClient = new creditKey.Client(data.publicKey, data.endpoint);
 
         quote.paymentMethod.subscribe(function(method) {
-          if (method.method === 'creditkey_gateway') {
-            originalOrderButton.html('<span data-bind="i18n: \'Continue with Credit Key\'">Continue with Credit Key</span>');
-          } else {
-            originalOrderButton.html(originalOrderButtonVal);
+          if (typeof originalOrderButton !== 'undefined') {
+            if (method.method === 'creditkey_gateway') {
+              originalOrderButton.html('<span data-bind="i18n: \'Continue with Credit Key\'">Continue with Credit Key</span>');
+            } else {
+              originalOrderButton.html(originalOrderButtonVal);
+            }
           }
         }, null, 'change');
 
