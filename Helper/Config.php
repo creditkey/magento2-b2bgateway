@@ -41,18 +41,33 @@ class Config
      * @var StoreConfigResolver
      */
     private $storeConfigResolver;
+    /**
+     * @var \Magento\Framework\Module\Manager
+     */
+    protected $moduleManager;
 
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param StoreConfigResolver $storeConfigResolver
+     * @param \Magento\Framework\Module\Manager $moduleManager
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        StoreConfigResolver                                $storeConfigResolver
+        StoreConfigResolver                                $storeConfigResolver,
+        \Magento\Framework\Module\Manager                  $moduleManager
     )
     {
         $this->scopeConfig = $scopeConfig;
         $this->storeConfigResolver = $storeConfigResolver;
+        $this->moduleManager = $moduleManager;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabledMeetanshiAutoInvShip()
+    {
+        return $this->moduleManager->isEnabled('Meetanshi_AutoInvShip');
     }
 
     /**

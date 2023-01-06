@@ -56,6 +56,10 @@ class CreateInvoiceAfterChangeStatusToShip implements ObserverInterface
             }
             $paymentMethod = $order->getPayment()->getMethod();
             if ($paymentMethod == 'creditkey_gateway' || $paymentMethod == 'creditkey_gateway_admin') {
+                if ($this->configHelper->isEnabledMeetanshiAutoInvShip()) {
+                    return;
+                }
+
                 if ($order instanceof \Magento\Framework\Model\AbstractModel) {
                     $statusForAutoCreateInvoice = $this->configHelper->getStatusForCreateInvoiceAfterUpdateStatus();
                     if ($order->getState() == $statusForAutoCreateInvoice || $order->getStatus() == $statusForAutoCreateInvoice) {
