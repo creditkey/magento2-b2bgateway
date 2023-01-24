@@ -72,12 +72,12 @@ class Order
                     $charges,
                     null
                 );
-                $this->logger->log(__('Change status for %1 order to shipped successfully', $ckOrderId));
+                $this->logger->info(__('Change status for %1 order to shipped successfully', $ckOrderId));
             }
         } catch (\CreditKey\Exceptions\NotFoundException $notFoundException) {
-            $this->logger->log('Not found order ' . $ckOrderId);
+            $this->logger->info('Not found order ' . $ckOrderId);
         } catch (\Exception $exception) {
-            $this->logger->log('Error when update status');
+            $this->logger->info('Error when update status');
             $this->logger->critical($exception->getMessage());
         }
         return $result;
