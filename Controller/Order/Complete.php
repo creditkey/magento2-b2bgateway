@@ -114,6 +114,14 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
             return $resultRedirect;
         }
 
+        if (!$quote->getCustomerIsGuest() && (int) $quote->getCustomerId() !== (int) $this->customerSession->getCustomerId()) {
+            // Customer session expired - redirect back to checkout
+            $this->logger->critical("Invalid customer session");
+            $this->messageManager->addErrorMessage(__('INVALID_CUSTOMER_SESSION'));
+            $resultRedirect->setPath('checkout');
+            return $resultRedirect;
+        }
+
         // Check that the payment is authorized
         $this->creditKeyApi->configure();
         $isAuthorized = false;
