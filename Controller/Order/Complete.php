@@ -22,6 +22,11 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
     private $modelCart;
 
     /**
+     * @var OrderSender
+     */
+    private $orderSender;
+
+    /**
      * @var \Magento\Quote\Api\CartRepository
      */
     protected $quoteRepository;

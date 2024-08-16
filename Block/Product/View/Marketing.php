@@ -54,6 +54,11 @@ class Marketing extends \Magento\Framework\View\Element\Template
     private $authorizedCategories;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Marketing constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\Registry $registry
