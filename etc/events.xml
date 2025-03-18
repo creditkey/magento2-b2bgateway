@@ -7,4 +7,7 @@
     <event name="sales_order_save_before">
         <observer name="create_invoice_after_change_ship" instance="CreditKey\B2BGateway\Observer\CreateInvoiceAfterChangeStatusToShip"/>
      </event>
+    <event name="sales_order_save_after">
+        <observer name="update_charges" instance="CreditKey\B2BGateway\Observer\UpdateChargesAfterOrderSave"/>
+    </event>
 </config>
