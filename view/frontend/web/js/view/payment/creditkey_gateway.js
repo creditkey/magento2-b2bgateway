@@ -16,7 +16,9 @@ define(
                 component: 'CreditKey_B2BGateway/js/view/payment/method-renderer/creditkey_gateway'
             }
         );
-        /** Add view logic here if needed */
+        /**
+    * Add view logic here if needed 
+    */
         return Component.extend({});
     }
 );

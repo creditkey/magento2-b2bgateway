@@ -1,13 +1,22 @@
 <?php
+
 namespace CreditKey\B2BGateway\Block\Product\View;
 
+use CreditKey\B2BGateway\Helper\Api;
+use CreditKey\B2BGateway\Helper\Config;
 use Magento\Catalog\Model\Product;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\Framework\Registry;
+use Magento\Framework\Serialize\SerializerInterface;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Tax\Api\TaxCalculationInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Marketing Block
  */
-class Marketing extends \Magento\Framework\View\Element\Template
+class Marketing extends Template
 {
     /**
      * @var Product
@@ -20,29 +29,27 @@ class Marketing extends \Magento\Framework\View\Element\Template
     private $configurableProduct;
 
     /**
-     * Core registry
-     *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
-    private $coreRegistry = null;
+    private $coreRegistry;
 
     /**
-     * @var \CreditKey\B2BGateway\Helper\Config
+     * @var Config
      */
     private $config;
 
     /**
-     * @var \Magento\Framework\Serialize\SerializerInterface
+     * @var SerializerInterface
      */
     private $json;
 
     /**
-     * @var \CreditKey\B2BGateway\Helper\Api
+     * @var Api
      */
     private $creditKeyApi;
 
     /**
-     * @var \Magento\Tax\Api\TaxCalculationInterface
+     * @var TaxCalculationInterface
      */
     private $taxCalculation;
 
@@ -54,30 +61,29 @@ class Marketing extends \Magento\Framework\View\Element\Template
     private $authorizedCategories;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * Marketing constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
-     * @param \CreditKey\B2BGateway\Helper\Config $config
-     * @param \Magento\Framework\Serialize\SerializerInterface $json
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Tax\Api\TaxCalculationInterface $taxCalculation
+     * @param Context $context
+     * @param Registry $registry
+     * @param Config $config
+     * @param SerializerInterface $json
+     * @param Api $creditKeyApi
+     * @param LoggerInterface $logger
+     * @param TaxCalculationInterface $taxCalculation
      * @param Configurable $configurableProduct
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \CreditKey\B2BGateway\Helper\Config $config,
-        \Magento\Framework\Serialize\SerializerInterface $json,
-        \CreditKey\B2BGateway\Helper\Api $creditKeyApi,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Tax\Api\TaxCalculationInterface $taxCalculation,
+        Context $context,
+        Registry $registry,
+        Config $config,
+        SerializerInterface $json,
+        Api $creditKeyApi,
+        LoggerInterface $logger,
+        TaxCalculationInterface $taxCalculation,
         Configurable $configurableProduct,
         array $data = []
     ) {
@@ -119,10 +125,10 @@ class Marketing extends \Magento\Framework\View\Element\Template
             $price = abs($this->config->getPdpMarketingPrice());
 
             $productPrice = $product->getPrice();
-            if($product->getTypeId() == Configurable::TYPE_CODE) {
+            if ($product->getTypeId() == Configurable::TYPE_CODE) {
                 $childProducts = $this->configurableProduct->getUsedProducts($product);
-                foreach($childProducts as $child) {
-                    if($child->getPrice() > $productPrice){
+                foreach ($childProducts as $child) {
+                    if ($child->getPrice() > $productPrice) {
                         $productPrice = $child->getPrice();
                     }
                 }
@@ -191,8 +197,7 @@ class Marketing extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * Return an array of category ids authorized to display
-     * our marketing content
+     * Return an array of category ids authorized to display our marketing content
      *
      * @return array
      */

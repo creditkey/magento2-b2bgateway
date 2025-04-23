@@ -1,10 +1,6 @@
 <?php
 namespace CreditKey\B2BGateway\Model\Adminhtml\Source;
 
-/**
- * Class Views
- * @package CreditKey\B2BGateway\Model\Adminhtml\Source
- */
 class Views implements \Magento\Framework\Option\ArrayInterface
 {
     /**

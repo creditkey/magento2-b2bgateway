@@ -10,7 +10,8 @@ use Magento\Sales\Model\OrderRepository;
 use Magento\Backend\Model\Session\Quote as SessionQuote;
 use Magento\Setup\Exception;
 
-/** @codeCoverageIgnore
+/**
+ * @codeCoverageIgnore
  */
 class StoreConfigResolver
 {

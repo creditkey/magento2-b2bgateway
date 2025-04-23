@@ -1,6 +1,12 @@
 <?php
 namespace CreditKey\B2BGateway\Helper;
 
+use CreditKey\B2BGateway\Model\ResourceModel\OrderPayment;
+use Magento\Framework\DB\TransactionFactory;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Quote\Model\Quote\Address;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Service\InvoiceService;
 use \Psr\Log\LoggerInterface;
 
 /**
@@ -9,45 +15,49 @@ use \Psr\Log\LoggerInterface;
 class Data
 {
     /**
-     * Logger
-     *
      * @var LoggerInterface
      */
     private $logger;
 
-    /** @var $connection */
-    private $connection;
+    /**
+     * @var OrderPayment
+     */
+    private $orderPaymentResource;
 
     /**
-     * @var \Magento\Sales\Model\Service\InvoiceService
+     * @var InvoiceService
      */
     protected $invoiceService;
 
     /**
-     * @var \Magento\Framework\DB\TransactionFactory
+     * @var TransactionFactory
      */
     protected $transactionFactory;
 
     /**
      * Data constructor.
+     *
      * @param LoggerInterface $logger
-     * @param \Magento\Framework\App\ResourceConnection $resource
-     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
-     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
+     * @param OrderPayment $orderPaymentResource
+     * @param InvoiceService $invoiceService
+     * @param TransactionFactory $transactionFactory
      */
-    public function __construct(LoggerInterface $logger,
-                                \Magento\Framework\App\ResourceConnection $resource,
-                                \Magento\Sales\Model\Service\InvoiceService $invoiceService,
-                                \Magento\Framework\DB\TransactionFactory $transactionFactory)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        OrderPayment $orderPaymentResource,
+        InvoiceService $invoiceService,
+        TransactionFactory $transactionFactory
+    ) {
         $this->logger = $logger;
-        $this->connection = $resource->getConnection();
+        $this->orderPaymentResource = $orderPaymentResource;
         $this->invoiceService = $invoiceService;
         $this->transactionFactory = $transactionFactory;
     }
 
     /**
      * Return a collection of \CreditKey\Models\CartItem objects from a Quote or Order object
+     *
+     * @param AbstractModel $holder
      * @return \CreditKey\Models\CartItem[]
      */
     public function buildCartContents($holder)
@@ -71,6 +81,8 @@ class Data
 
     /**
      * Return a \CreditKey\Models\Address from a Magento Address object
+     *
+     * @param Address $magentoAddress
      * @return \CreditKey\Models\Address
      */
     public function buildAddress($magentoAddress)
@@ -102,6 +114,8 @@ class Data
 
     /**
      * Return a \CreditKey\Models\Charges objects from a Quote or Order object
+     *
+     * @param AbstractModel $holder
      * @return \CreditKey\Models\Charges
      */
     public function buildCharges($holder)
@@ -112,6 +126,9 @@ class Data
 
     /**
      * Return a \CreditKey\Models\Charges objects from a Quote or Order object, but with an updated grand total amount.
+     *
+     * @param AbstractModel $holder
+     * @param float $updatedGrandTotal
      * @return \CreditKey\Models\Charges
      */
     public function buildChargesWithUpdatedGrandTotal($holder, $updatedGrandTotal)
@@ -156,38 +173,31 @@ class Data
     }
 
     /**
-     * @param $ckOrderId
-     * @return |null
+     * Get order ID by CreditKey ID
+     *
+     * @param string $ckOrderId
+     * @return string
      */
     public function getOrderIdByCkId($ckOrderId)
     {
-        $sopTable = $this->connection->getTableName('sales_order_payment');
-
-        try {
-            $searchQuery = "SELECT parent_id AS order_id, JSON_UNQUOTE(JSON_EXTRACT(`additional_information`,'$.ckOrderId'))
-                            AS ckOrderId FROM  sales_order_payment HAVING ckOrderId='{$ckOrderId}';";
-            $orderData = $this->connection->fetchRow($searchQuery);
-
-            if($orderData && isset($orderData['order_id'])) {
-                return $orderData['order_id'];
-            }
-        } catch (\Exception $e) {
-        }
-
-        return null;
+        return $this->orderPaymentResource->getOrderIdByCkId($ckOrderId);
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * Capture and create invoice for order
+     *
+     * @param Order $order
      */
-    public function captureAndCreateInvoice(\Magento\Sales\Model\Order $order)
+    public function captureAndCreateInvoice(Order $order)
     {
         // prepare invoice and generate it
         $invoice = $this->invoiceService->prepareInvoice($order);
         $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE);
         $invoice->register();
 
-        /** @var \Magento\Framework\DB\Transaction $transaction */
+        /**
+ * @var \Magento\Framework\DB\Transaction $transaction
+*/
         $transaction = $this->transactionFactory->create();
         $transaction->addObject($order)
             ->addObject($invoice)

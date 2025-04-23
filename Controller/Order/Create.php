@@ -26,15 +26,15 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
      * Construct
      *
      * @param \Magento\Framework\App\Action\Context $context
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
-     * @param \CreditKey\B2BGateway\Helper\Config $config
-     * @param \Magento\Customer\Model\Url $customerUrl
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param \Magento\Framework\App\Request\Http $request
+     * @param \CreditKey\B2BGateway\Helper\Api      $creditKeyApi
+     * @param \CreditKey\B2BGateway\Helper\Data     $creditKeyData
+     * @param \CreditKey\B2BGateway\Helper\Config   $config
+     * @param \Magento\Customer\Model\Url           $customerUrl
+     * @param \Magento\Checkout\Model\Session       $checkoutSession
+     * @param \Magento\Customer\Model\Session       $customerSession
+     * @param \Psr\Log\LoggerInterface              $logger
+     * @param \Magento\Framework\UrlInterface       $urlBuilder
+     * @param \Magento\Framework\App\Request\Http   $request
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,

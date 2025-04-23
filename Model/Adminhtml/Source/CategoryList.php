@@ -1,9 +1,6 @@
 <?php
 namespace CreditKey\B2BGateway\Model\Adminhtml\Source;
 
-/**
- * Class CategoryList
- */
 class CategoryList implements \Magento\Framework\Data\OptionSourceInterface
 {
     /**
@@ -37,9 +34,13 @@ class CategoryList implements \Magento\Framework\Data\OptionSourceInterface
     {
         if (!$this->options) {
             // Get full category tree
-            /** @var \Magento\Catalog\Model\Category $rootCategory */
+            /**
+ * @var \Magento\Catalog\Model\Category $rootCategory
+*/
             $rootCategory = $this->treeModel->getRootNode();
-            /** @var \Magento\Catalog\Api\Data\CategoryTreeInterface $categoryTree */
+            /**
+ * @var \Magento\Catalog\Api\Data\CategoryTreeInterface $categoryTree
+*/
             $categoryTree = $this->treeModel->getTree($rootCategory);
 
             // build options from tree hierarchy
@@ -52,7 +53,7 @@ class CategoryList implements \Magento\Framework\Data\OptionSourceInterface
      * Recursively build options from nested category tree hierarchy
      *
      * @param \Magento\Catalog\Api\Data\CategoryTreeInterface[] $categories
-     * @param integer $depth
+     * @param integer                                           $depth
      *
      * @return void
      */

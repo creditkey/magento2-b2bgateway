@@ -28,8 +28,8 @@ class CaptureCommand implements CommandInterface
     /**
      * Construct
      *
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
+     * @param \Psr\Log\LoggerInterface          $logger
+     * @param \CreditKey\B2BGateway\Helper\Api  $creditKeyApi
      * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
      */
     public function __construct(
@@ -45,7 +45,7 @@ class CaptureCommand implements CommandInterface
     /**
      * Executes command basing on business object
      *
-     * @param array $commandSubject
+     * @param  array $commandSubject
      * @return null|Command\ResultInterface
      * @throws CommandException
      */

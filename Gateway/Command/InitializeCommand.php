@@ -7,9 +7,6 @@ use Magento\Payment\Gateway\CommandInterface;
 use Magento\Sales\Model\Order;
 use \Psr\Log\LoggerInterface;
 
-/**
- * Initialize Command
- */
 class InitializeCommand implements CommandInterface
 {
     /**
@@ -30,7 +27,7 @@ class InitializeCommand implements CommandInterface
     /**
      * Executes command basing on business object
      *
-     * @param array $commandSubject
+     * @param  array $commandSubject
      * @return null|Command\ResultInterface
      * @throws CommandException
      */

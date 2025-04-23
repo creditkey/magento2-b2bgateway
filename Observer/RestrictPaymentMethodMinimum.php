@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
@@ -10,17 +9,16 @@ namespace CreditKey\B2BGateway\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 
-/**
- * Class RestrictPaymentMethodMinimum
- * @package CreditKey\B2BGateway\Observer
- */
 class RestrictPaymentMethodMinimum implements ObserverInterface
 {
-    /** @var \CreditKey\B2BGateway\Helper\Config  */
+    /**
+     * @var \CreditKey\B2BGateway\Helper\Config
+     */
     protected $_configHelper;
 
     /**
      * RestrictPaymentMethodMinimum constructor.
+     *
      * @param \CreditKey\B2BGateway\Helper\Config $configHelper
      */
     public function __construct(\CreditKey\B2BGateway\Helper\Config $configHelper)
@@ -29,6 +27,8 @@ class RestrictPaymentMethodMinimum implements ObserverInterface
     }
 
     /**
+     * Observer execution
+     *
      * @param EventObserver $observer
      */
     public function execute(EventObserver $observer)

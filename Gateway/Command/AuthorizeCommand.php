@@ -6,9 +6,6 @@ use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Payment\Gateway\CommandInterface;
 use \Psr\Log\LoggerInterface;
 
-/**
- * Authorize Command
- */
 class AuthorizeCommand implements CommandInterface
 {
     /**
@@ -29,7 +26,7 @@ class AuthorizeCommand implements CommandInterface
     /**
      * Executes command basing on business object
      *
-     * @param array $commandSubject
+     * @param  array $commandSubject
      * @return null|Command\ResultInterface
      * @throws CommandException
      */
