@@ -22,79 +22,87 @@ define(
         var data = window.checkoutConfig.payment.creditkey_gateway;
         var ckClient = new creditKey.Client(data.publicKey, data.endpoint);
 
-        quote.paymentMethod.subscribe(function(method) {
-          if (typeof originalOrderButton !== 'undefined') {
-            if (method.method === 'creditkey_gateway') {
-              originalOrderButton.html('<span data-bind="i18n: \'Continue with Credit Key\'">Continue with Credit Key</span>');
-            } else {
-              originalOrderButton.html(originalOrderButtonVal);
-            }
-          }
-        }, null, 'change');
-
-        return Component.extend({
-            defaults: {
-                template: 'CreditKey_B2BGateway/payment/form',
-                transactionResult: ''
-            },
-
-            getPaymentAcceptanceMarkSrc: function () {
-              return window.checkoutConfig.payment.creditkey_gateway.assetSrc;
-            },
-
-            getCode: function() {
-                return 'creditkey_gateway';
-            },
-
-            getData: function() {
-              return {
-                'method': this.item.method,
-                'additional_data': {
-                  'transaction-result': ''
+        quote.paymentMethod.subscribe(
+            function (method) {
+                if (typeof originalOrderButton !== 'undefined') {
+                    if (method.method === 'creditkey_gateway') {
+                        originalOrderButton.html('<span data-bind="i18n: \'Continue with Credit Key\'">Continue with Credit Key</span>');
+                    } else {
+                        originalOrderButton.html(originalOrderButtonVal);
+                    }
                 }
-              }
-            },
+            }, null, 'change'
+        );
 
-            getCustomTitle: function() {
-              var totals = quote.getTotals()();
-              var charges = new creditKey.Charges(
-                totals.subtotal,
-                totals.base_shipping_amount,
-                totals.base_tax_amount,
-                totals.base_discount_amount,
-                totals.base_grand_total
-              );
-                originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
-                originalOrderButtonVal = originalOrderButton.html();
-            },
+        return Component.extend(
+            {
+                defaults: {
+                    template: 'CreditKey_B2BGateway/payment/form',
+                    transactionResult: ''
+                },
 
-            isDisplayed: function() {
-              var data = window.checkoutConfig.payment.creditkey_gateway;
-              return data.isCreditKeyDisplayed;
-            },
+                getPaymentAcceptanceMarkSrc: function () {
+                    return window.checkoutConfig.payment.creditkey_gateway.assetSrc;
+                },
 
-            redirectToPayment: function() {
-              // validate the form
-              if (this.validate() && additionalValidators.validate()) {
-                  var checkoutMode = window.checkoutConfig.payment.creditkey_gateway.checkoutMode;
-                // if valide then we call our checkout modal
-                setPaymentInformation(messageContainer, { method: quote.paymentMethod().method })
-                  .then(function () {
-                    creditKey.checkout(data.redirectUrl, checkoutMode);
-                    $('#creditkey-iframe').livequery(function () {
-                      $('#creditkey-iframe').attr('scrolling','yes');
-                    });
-                  });
-              }
-            },
+                getCode: function () {
+                    return 'creditkey_gateway';
+                },
 
-            redirectAfterPlaceOrder: false,
+                getData: function () {
+                    return {
+                        'method': this.item.method,
+                        'additional_data': {
+                            'transaction-result': ''
+                        }
+                    }
+                },
 
-            selectPaymentMethod: function() {
-              selectPaymentMethodAction(this.getData());
-              checkoutData.setSelectedPaymentMethod(this.item.method);
-              return true;
+                getCustomTitle: function () {
+                    var totals = quote.getTotals()();
+                    var charges = new creditKey.Charges(
+                        totals.subtotal,
+                        totals.base_shipping_amount,
+                        totals.base_tax_amount,
+                        totals.base_discount_amount,
+                        totals.base_grand_total
+                    );
+                    originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
+                    originalOrderButtonVal = originalOrderButton.html();
+                },
+
+                isDisplayed: function () {
+                    var data = window.checkoutConfig.payment.creditkey_gateway;
+                    return data.isCreditKeyDisplayed;
+                },
+
+                redirectToPayment: function () {
+                    // validate the form
+                    if (this.validate() && additionalValidators.validate()) {
+                        var checkoutMode = window.checkoutConfig.payment.creditkey_gateway.checkoutMode;
+                        // if valide then we call our checkout modal
+                        setPaymentInformation(messageContainer, { method: quote.paymentMethod().method })
+                        .then(
+                            function () {
+                                creditKey.checkout(data.redirectUrl, checkoutMode);
+                                $('#creditkey-iframe').livequery(
+                                    function () {
+                                        $('#creditkey-iframe').attr('scrolling','yes');
+                                    }
+                                );
+                            }
+                        );
+                    }
+                },
+
+                redirectAfterPlaceOrder: false,
+
+                selectPaymentMethod: function () {
+                    selectPaymentMethodAction(this.getData());
+                    checkoutData.setSelectedPaymentMethod(this.item.method);
+                    return true;
+                }
             }
-        });
+        );
     }
 );

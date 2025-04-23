@@ -26,13 +26,13 @@ class MarketingRadios extends \Magento\Framework\Data\Form\Element\Radios
     private $creditKeyApi;
 
     /**
-     * @param \Magento\Framework\Data\Form\Element\Factory $factoryElement
+     * @param \Magento\Framework\Data\Form\Element\Factory           $factoryElement
      * @param \Magento\Framework\Data\Form\Element\CollectionFactory $factoryCollection
-     * @param Escaper $escaper
-     * @param \CreditKey\B2BGateway\Helper\Config $config
-     * @param \Magento\Framework\Serialize\SerializerInterface $json
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param array $data
+     * @param Escaper                                                $escaper
+     * @param \CreditKey\B2BGateway\Helper\Config                    $config
+     * @param \Magento\Framework\Serialize\SerializerInterface       $json
+     * @param \CreditKey\B2BGateway\Helper\Api                       $creditKeyApi
+     * @param array                                                  $data
      */
     public function __construct(
         \Magento\Framework\Data\Form\Element\Factory $factoryElement,

@@ -1,13 +1,11 @@
 <?php
 namespace CreditKey\B2BGateway\Controller\Order;
 
-/**
- * Class AdminComplete
- * @package CreditKey\B2BGateway\Controller\Order
- */
 class AdminComplete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyController
 {
-    /** @var \Magento\Sales\Api\OrderRepositoryInterface  */
+    /**
+     * @var \Magento\Sales\Api\OrderRepositoryInterface
+     */
     protected $orderRepository;
 
     /**
@@ -24,13 +22,14 @@ class AdminComplete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyCo
 
     /**
      * AdminComplete constructor.
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
-     * @param \Magento\Customer\Model\Url $customerUrl
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @param \Magento\Framework\App\Action\Context       $context
+     * @param \CreditKey\B2BGateway\Helper\Api            $creditKeyApi
+     * @param \CreditKey\B2BGateway\Helper\Data           $creditKeyData
+     * @param \Magento\Customer\Model\Url                 $customerUrl
+     * @param \Magento\Checkout\Model\Session             $checkoutSession
+     * @param \Magento\Customer\Model\Session             $customerSession
+     * @param \Psr\Log\LoggerInterface                    $logger
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
      */
     public function __construct(
@@ -71,7 +70,7 @@ class AdminComplete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyCo
         $ckId = $this->getRequest()->getParam('id');
         $orderId = $this->creditKeyData->getOrderIdByCkId($ckId);
 
-        if($orderId) {
+        if ($orderId) {
             $order = $this->orderRepository->get($orderId);
             $order->setState(\Magento\Sales\Model\Order::STATE_PROCESSING, true);
             $order->setStatus(\Magento\Sales\Model\Order::STATE_PROCESSING);
@@ -80,14 +79,14 @@ class AdminComplete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyCo
             $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
             $action = $this->scopeConfig->getValue('payment/creditkey_gateway/payment_action', $storeScope);
 
-            if($action == \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE) {
+            if ($action == \Magento\Payment\Model\Method\AbstractMethod::ACTION_AUTHORIZE_CAPTURE) {
                 $this->captureAndCreateInvoice($order);
             }
         }
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param  \Magento\Sales\Model\Order $order
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function captureAndCreateInvoice(\Magento\Sales\Model\Order $order)
@@ -97,7 +96,9 @@ class AdminComplete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyCo
         $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE);
         $invoice->register();
 
-        /** @var \Magento\Framework\DB\Transaction $transaction */
+        /**
+ * @var \Magento\Framework\DB\Transaction $transaction
+*/
         $transaction = $this->transactionFactory->create();
         $transaction->addObject($order)
             ->addObject($invoice)

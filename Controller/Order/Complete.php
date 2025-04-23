@@ -46,20 +46,20 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
     protected $invoiceSender;
 
     /**
-     * @param \Magento\Framework\App\Action\Context $context
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
-     * @param \Magento\Customer\Model\Url $customerUrl
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Quote\Model\QuoteManagement $quoteManagement
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-     * @param OrderSender $orderSender
-     * @param InvoiceSender $invoiceSender
-     * @param \Magento\Checkout\Model\Cart $modelCart
+     * @param \Magento\Framework\App\Action\Context       $context
+     * @param \CreditKey\B2BGateway\Helper\Api            $creditKeyApi
+     * @param \CreditKey\B2BGateway\Helper\Data           $creditKeyData
+     * @param \Magento\Customer\Model\Url                 $customerUrl
+     * @param \Magento\Checkout\Model\Session             $checkoutSession
+     * @param \Magento\Customer\Model\Session             $customerSession
+     * @param \Psr\Log\LoggerInterface                    $logger
+     * @param \Magento\Quote\Model\QuoteManagement        $quoteManagement
+     * @param \Magento\Quote\Api\CartRepositoryInterface  $quoteRepository
+     * @param OrderSender                                 $orderSender
+     * @param InvoiceSender                               $invoiceSender
+     * @param \Magento\Checkout\Model\Cart                $modelCart
      * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
-     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
+     * @param \Magento\Framework\DB\TransactionFactory    $transactionFactory
      */
     public function __construct(
         \Magento\Framework\App\Action\Context       $context,
@@ -76,8 +76,7 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
         \Magento\Checkout\Model\Cart                $modelCart,
         \Magento\Sales\Model\Service\InvoiceService $invoiceService,
         \Magento\Framework\DB\TransactionFactory    $transactionFactory
-    )
-    {
+    ) {
         $this->quoteManagement = $quoteManagement;
         $this->quoteRepository = $quoteRepository;
         $this->modelCart = $modelCart;
@@ -216,7 +215,7 @@ class Complete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControl
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $order
+     * @param  \Magento\Sales\Model\Order $order
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function captureAndCreateInvoice(\Magento\Sales\Model\Order $order)

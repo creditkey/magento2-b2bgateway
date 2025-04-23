@@ -44,12 +44,12 @@ abstract class AbstractCreditKeyController extends AppAction implements Redirect
      * Construct
      *
      * @param \Magento\Framework\App\Action\Context $context
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
-     * @param \Magento\Customer\Model\Url $customerUrl
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \CreditKey\B2BGateway\Helper\Api      $creditKeyApi
+     * @param \CreditKey\B2BGateway\Helper\Data     $creditKeyData
+     * @param \Magento\Customer\Model\Url           $customerUrl
+     * @param \Magento\Checkout\Model\Session       $checkoutSession
+     * @param \Magento\Customer\Model\Session       $customerSession
+     * @param \Psr\Log\LoggerInterface              $logger
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,

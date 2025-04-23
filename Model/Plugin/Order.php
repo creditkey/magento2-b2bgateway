@@ -1,7 +1,7 @@
 <?php
 /**
- * @package     CreditKey/B2bGateWay
- * @copyright   Copyright © 2021 CoreDevelopment LLC. All Rights Reserved. *
+ * @package   CreditKey/B2bGateWay
+ * @copyright Copyright © 2021 CoreDevelopment LLC. All Rights Reserved. *
  */
 declare(strict_types=1);
 
@@ -27,24 +27,23 @@ class Order
     private $creditKeyData;
 
     /**
-     * @param Api $api
-     * @param Data $data
+     * @param Api             $api
+     * @param Data            $data
      * @param LoggerInterface $logger
      */
     public function __construct(
         Api             $api,
         Data            $data,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->api = $api;
         $this->logger = $logger;
         $this->creditKeyData = $data;
     }
 
     /**
-     * @param \Magento\Sales\Model\Order $subject
-     * @param $result
+     * @param  \Magento\Sales\Model\Order $subject
+     * @param  $result
      * @return mixed
      */
     public function afterAfterSave(\Magento\Sales\Model\Order $subject, $result)
@@ -54,7 +53,9 @@ class Order
             $status = ['complete', 'shipped'];
             if ($payment && $payment->getMethod() == \CreditKey\B2BGateway\Model\Ui\ConfigProvider::CODE
                 && $payment->getAdditionalInformation('ckOrderId')
-                && in_array($subject->getStatus(), $status
+                && in_array(
+                    $subject->getStatus(),
+                    $status
                 )
             ) {
                 $ckOrderId = $payment->getAdditionalInformation('ckOrderId');

@@ -1,9 +1,6 @@
 <?php
 namespace CreditKey\B2BGateway\Model\Ui;
 
-/**
- * Class ConfigProvider
- */
 class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
 {
     const CODE = 'creditkey_gateway';
@@ -44,14 +41,14 @@ class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
     /**
      * Construct
      *
-     * @param \Magento\Checkout\Model\Cart $cart
+     * @param \Magento\Checkout\Model\Cart             $cart
      * @param \Magento\Framework\View\Asset\Repository $assetRepo
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param \CreditKey\B2BGateway\Helper\Config $config
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param \CreditKey\B2BGateway\Helper\Data $creditKeyData
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Customer\Model\Session          $customerSession
+     * @param \Magento\Framework\UrlInterface          $urlBuilder
+     * @param \CreditKey\B2BGateway\Helper\Config      $config
+     * @param \CreditKey\B2BGateway\Helper\Api         $creditKeyApi
+     * @param \CreditKey\B2BGateway\Helper\Data        $creditKeyData
+     * @param \Psr\Log\LoggerInterface                 $logger
      */
     public function __construct(
         \Magento\Checkout\Model\Cart $cart,

@@ -27,6 +27,11 @@ class UpdateChargesAfterOrderSave implements ObserverInterface
      */
     private $logger;
 
+    /**
+     * @param Data $creditKeyData
+     * @param Api $api
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         Data $creditKeyData,
         Api $api,
@@ -37,6 +42,11 @@ class UpdateChargesAfterOrderSave implements ObserverInterface
         $this->logger = $logger;
     }
 
+    /**
+     * Observer execution
+     *
+     * @param Observer $observer
+     */
     public function execute(Observer $observer)
     {
         $order = $observer->getData('order');

@@ -13,7 +13,7 @@ class Info extends ConfigurableInfo
     /**
      * Returns label
      *
-     * @param string $field
+     * @param  string $field
      * @return Phrase
      */
     protected function getLabel($field)
@@ -24,8 +24,8 @@ class Info extends ConfigurableInfo
     /**
      * Returns value view
      *
-     * @param string $field
-     * @param string $value
+     * @param  string $field
+     * @param  string $value
      * @return string | Phrase
      */
     protected function getValueView($field, $value)

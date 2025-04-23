@@ -5,9 +5,6 @@ use Magento\Payment\Gateway\Command;
 use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Payment\Gateway\CommandInterface;
 
-/**
- * Void Command
- */
 class VoidCommand implements CommandInterface
 {
     /**
@@ -23,7 +20,7 @@ class VoidCommand implements CommandInterface
     /**
      * Construct
      *
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Psr\Log\LoggerInterface         $logger
      * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
      */
     public function __construct(
@@ -37,7 +34,7 @@ class VoidCommand implements CommandInterface
     /**
      * Executes command basing on business object
      *
-     * @param array $commandSubject
+     * @param  array $commandSubject
      * @return null|Command\ResultInterface
      * @throws CommandException
      */

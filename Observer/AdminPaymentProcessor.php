@@ -5,22 +5,23 @@ namespace CreditKey\B2BGateway\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
-/**
- * Class AdminPaymentProcessor
- * @package CreditKey\B2BGateway\Observer
- */
 class AdminPaymentProcessor implements ObserverInterface
 {
-    /** @var \CreditKey\B2BGateway\Helper\Api */
+    /**
+     * @var \CreditKey\B2BGateway\Helper\Api
+     */
     protected $apiHelper;
 
-    /** @var \Magento\Framework\Url */
+    /**
+     * @var \Magento\Framework\Url
+     */
     protected $urlBuilder;
 
     /**
      * AdminPaymentProcessor constructor.
+     *
      * @param \CreditKey\B2BGateway\Helper\Api $apiHelper
-     * @param \Magento\Framework\Url $urlBuilder
+     * @param \Magento\Framework\Url           $urlBuilder
      */
     public function __construct(
         \CreditKey\B2BGateway\Helper\Api $apiHelper,
@@ -31,8 +32,9 @@ class AdminPaymentProcessor implements ObserverInterface
     }
 
     /**
+     * Observer execution
+     *
      * @param Observer $observer
-     * @return null|void
      */
     public function execute(Observer $observer)
     {
@@ -70,7 +72,6 @@ class AdminPaymentProcessor implements ObserverInterface
 
             $formData['return_url'] = str_replace('CKKEY', '%CKKEY%', $formData['return_url']);
             $formData['order_complete_url'] = str_replace('CKKEY', '%CKKEY%', $formData['order_complete_url']);
-            $formData['merchant_data'] = [];
             $formData['mode'] = 'link';
 
             $orderItems = $order->getAllVisibleItems();
@@ -90,8 +91,8 @@ class AdminPaymentProcessor implements ObserverInterface
             $address['last_name'] = $billingAddress->getLastname();
             $address['company_name'] = $billingAddress->getCompany();
             $address['email'] = $billingAddress->getEmail();
-            $address['address1'] = @$billingAddress->getStreet(1)[0];
-            $address['address2'] = @$billingAddress->getStreet(1)[1];
+            $address['address1'] = $billingAddress->getStreet(1)[0] ?? '';
+            $address['address2'] = $billingAddress->getStreet(1)[1] ?? '';
             $address['city'] = $billingAddress->getCity();
             $address['state'] = $billingAddress->getRegion();
             $address['zip'] = $billingAddress->getPostcode();
@@ -104,8 +105,8 @@ class AdminPaymentProcessor implements ObserverInterface
             $address['last_name'] = $shippingAddress->getLastname();
             $address['company_name'] = $shippingAddress->getCompany();
             $address['email'] = $shippingAddress->getEmail();
-            $address['address1'] = @$shippingAddress->getStreet(1)[0];
-            $address['address2'] = @$shippingAddress->getStreet(1)[1];
+            $address['address1'] = $shippingAddress->getStreet(1)[0] ?? '';
+            $address['address2'] = $shippingAddress->getStreet(1)[1] ?? '';
             $address['city'] = $shippingAddress->getCity();
             $address['state'] = $shippingAddress->getRegion();
             $address['zip'] = $shippingAddress->getPostcode();

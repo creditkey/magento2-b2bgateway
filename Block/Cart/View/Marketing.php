@@ -28,12 +28,13 @@ class Marketing extends \Magento\Framework\View\Element\Template
 
     /**
      * Marketing constructor.
+     *
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \CreditKey\B2BGateway\Helper\Config $config
+     * @param \CreditKey\B2BGateway\Helper\Config              $config
      * @param \Magento\Framework\Serialize\SerializerInterface $json
-     * @param \CreditKey\B2BGateway\Helper\Api $creditKeyApi
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param array $data
+     * @param \CreditKey\B2BGateway\Helper\Api                 $creditKeyApi
+     * @param \Magento\Checkout\Model\Session                  $checkoutSession
+     * @param array                                            $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -73,9 +74,12 @@ class Marketing extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * Check if the cart marketing is enabled
+     *
      * @return mixed
      */
-    public function isActiveEnable() {
+    public function isActiveEnable()
+    {
         return $this->config->getCartMarketingEnable();
     }
 
