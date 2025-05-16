@@ -39,7 +39,7 @@ class RestrictPaymentMethodMinimum implements ObserverInterface
         if ($methodInstance->getCode() == \CreditKey\B2BGateway\Model\Ui\ConfigProvider::CODE) {
             $quote = $event->getQuote();
             $grandTotal = $quote->getGrandTotal();
-            $checkoutMinPrice = abs($this->_configHelper->getCheckoutMinPrice());
+            $checkoutMinPrice = abs((float) $this->_configHelper->getCheckoutMinPrice());
 
             if (is_numeric($checkoutMinPrice) && $checkoutMinPrice != 0 && $grandTotal < $checkoutMinPrice) {
                 $result = $observer->getEvent()->getResult();

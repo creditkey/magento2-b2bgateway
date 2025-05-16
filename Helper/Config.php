@@ -190,7 +190,7 @@ class Config
     public function getPdpMarketingCategories()
     {
         $catIds = $this->getConfigValue(self::XML_KEY_PDP_MARKETING_CATS);
-        return ($catIds === null) ? [] : explode(',', $catIds);
+        return ($catIds === null) ? [] : explode(',', (string) $catIds);
     }
 
     /**

@@ -110,7 +110,7 @@ class Marketing extends \Magento\Framework\View\Element\Template
     public function isAuthorized()
     {
         $quote = $this->checkoutSession->getQuote();
-        $price = abs($this->config->getCartMarketingPrice());
+        $price = abs((float) $this->config->getCartMarketingPrice());
 
         // Id cart subtotal correct
         if (is_numeric($price) && $price != 0 && $quote->getSubtotal() < $price) {
