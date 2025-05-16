@@ -122,7 +122,7 @@ class Marketing extends Template
         // Sanity check product has been loaded
         if ($product && $product->getId()) {
 
-            $price = abs($this->config->getPdpMarketingPrice());
+            $price = abs((float) $this->config->getPdpMarketingPrice());
 
             $productPrice = $product->getPrice();
             if ($product->getTypeId() == Configurable::TYPE_CODE) {

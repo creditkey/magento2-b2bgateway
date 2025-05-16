@@ -166,7 +166,7 @@ class Data
         if ($discount == 0) {
             $discount = $holder->getDiscountAmount() == null
               ? (float)0
-              : (float)abs($holder->getDiscountAmount());
+              : (float)abs((float) $holder->getDiscountAmount());
         }
 
         return new \CreditKey\Models\Charges($total, $shippingAmount, $tax, $discount, $updatedGrandTotal);
