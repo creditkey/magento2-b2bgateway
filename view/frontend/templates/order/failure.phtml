@@ -1,0 +1,14 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+
+<div>
+    <p><?= $escaper->escapeHtml(__('Your payment could not be processed. Please try again or contact support for assistance.')) ?></p>
+    <p><?= $escaper->escapeHtml(__('If you have any questions, please reach out to our support team.')) ?></p>
+    <p><?= $escaper->escapeHtml(__('The popup will be automatically closing soon.')) ?></p>
+</div>
+
+<script type="text/javascript">
+    top && top.postMessage({ event: 'creditkey_b2b_gateway', action: 'closePopup' }, location.origin);
+</script>
