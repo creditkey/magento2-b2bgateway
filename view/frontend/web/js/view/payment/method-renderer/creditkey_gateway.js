@@ -41,6 +41,32 @@ define(
                     transactionResult: ''
                 },
 
+                initObservable: function () {
+                    this._super();
+
+                    window.addEventListener('message', function (event) {
+                        if (event.origin !== window.location.origin) {
+                            return;
+                        }
+
+                        if (event.data.event === 'creditkey_b2b_gateway' && event.data.action === 'closePopup') {
+                            window.addEventListener('message', function (event) {
+                                if (event.origin !== window.location.origin) {
+                                    return;
+                                }
+
+                                if (event.data.event === 'creditkey_b2b_gateway' && event.data.action === 'closePopup') {
+                                    setTimeout(() => {
+                                        document.getElementById('creditkey-modal').remove();
+                                    }, 5000);
+                                }
+                            });
+                        }
+                    });
+
+                    return this;
+                },
+
                 getPaymentAcceptanceMarkSrc: function () {
                     return window.checkoutConfig.payment.creditkey_gateway.assetSrc;
                 },

@@ -70,6 +70,7 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
      */
     public function execute()
     {
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $quote = $this->checkoutSession->getQuote();
 
         $cartContents = $this->creditKeyData->buildCartContents($quote);
@@ -118,14 +119,13 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
                 $mode
             );
 
-            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setUrl($redirectTo);
-            return $resultRedirect;
         } catch (\Exception $e) {
             $this->logger->critical($e);
             $this->messageManager->addErrorMessage(__('CREDIT_KEY_UNAVAILABLE'));
-            $this->redirect('checkout');
-            return $this;
+            $resultRedirect->setPath('modal' === $mode ? '*/*/failure' : 'checkout/cart');
         }
+
+        return $resultRedirect;
     }
 }
