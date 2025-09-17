@@ -116,6 +116,7 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
                 $customerId,
                 $returnUrl,
                 $cancelUrl,
+                '',
                 $mode
             );
 
