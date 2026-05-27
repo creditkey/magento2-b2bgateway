@@ -30,6 +30,10 @@ define(
                     );
                     var charges = new creditKey.Charges(...config.charges);
 
+                    if (charges.data.total <= 0 || charges.data.grand_total <= 0) {
+                        return;
+                    }
+
                     var res =  ckClient.get_pdp_display(charges);
                     elem.html(res);
                 }
