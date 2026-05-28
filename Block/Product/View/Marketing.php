@@ -4,6 +4,7 @@ namespace CreditKey\B2BGateway\Block\Product\View;
 
 use CreditKey\B2BGateway\Helper\Api;
 use CreditKey\B2BGateway\Helper\Config;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Registry;
@@ -27,6 +28,11 @@ class Marketing extends Template
      * @var Configurable
      */
     private $configurableProduct;
+
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
 
     /**
      * @var Registry
@@ -74,6 +80,7 @@ class Marketing extends Template
      * @param LoggerInterface $logger
      * @param TaxCalculationInterface $taxCalculation
      * @param Configurable $configurableProduct
+     * @param ProductRepositoryInterface $productRepository
      * @param array $data
      */
     public function __construct(
@@ -85,6 +92,7 @@ class Marketing extends Template
         LoggerInterface $logger,
         TaxCalculationInterface $taxCalculation,
         Configurable $configurableProduct,
+        ProductRepositoryInterface $productRepository,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
@@ -94,6 +102,7 @@ class Marketing extends Template
         $this->logger = $logger;
         $this->taxCalculation = $taxCalculation;
         $this->configurableProduct = $configurableProduct;
+        $this->productRepository = $productRepository;
         parent::__construct($context, $data);
     }
 
@@ -255,12 +264,23 @@ class Marketing extends Template
     private function getLowestChildPrice(Product $product)
     {
         $lowestPrice = null;
-        $childProducts = $this->configurableProduct->getUsedProducts($product);
+        $childIdsByAttribute = $this->configurableProduct->getChildrenIds($product->getId());
+        $childIds = [];
 
-        foreach ($childProducts as $child) {
-            $childPrice = (float) $child->getFinalPrice();
-            if ($childPrice <= 0) {
-                $childPrice = (float) $child->getPrice();
+        foreach ($childIdsByAttribute as $ids) {
+            $childIds = array_merge($childIds, $ids);
+        }
+
+        foreach (array_unique($childIds) as $childId) {
+            try {
+                $child = $this->productRepository->getById($childId);
+                $childPrice = (float) $child->getFinalPrice();
+                if ($childPrice <= 0) {
+                    $childPrice = (float) $child->getPrice();
+                }
+            } catch (\Exception $e) {
+                $this->logger->debug('Unable to resolve Credit Key PDP child price: ' . $e->getMessage());
+                continue;
             }
 
             if ($childPrice > 0 && ($lowestPrice === null || $childPrice < $lowestPrice)) {

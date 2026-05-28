@@ -12,5 +12,15 @@
                 <value id="creditkey-assets-s3" type="host">creditkey-assets.s3-us-west-2.amazonaws.com</value>
             </values>
         </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="creditkey-checkout" type="host">checkout.creditkey.com</value>
+                <value id="creditkey-checkout-preview" type="host">preview-checkout.creditkey.com</value>
+                <value id="creditkey-checkout-staging" type="host">staging-checkout.creditkey.com</value>
+                <value id="creditkey-marketing" type="host">marketing.creditkey.com</value>
+                <value id="creditkey-marketing-preview" type="host">marketing.preview.creditkey.com</value>
+                <value id="creditkey-marketing-staging" type="host">staging-marketing.creditkey.com</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>
