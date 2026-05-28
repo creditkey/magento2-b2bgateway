@@ -124,15 +124,7 @@ class Marketing extends Template
 
             $price = abs((float) $this->config->getPdpMarketingPrice());
 
-            $productPrice = $product->getPrice();
-            if ($product->getTypeId() == Configurable::TYPE_CODE) {
-                $childProducts = $this->configurableProduct->getUsedProducts($product);
-                foreach ($childProducts as $child) {
-                    if ($child->getPrice() > $productPrice) {
-                        $productPrice = $child->getPrice();
-                    }
-                }
-            }
+            $productPrice = $this->getProductMessagingPrice($product);
 
             if (is_numeric($price) && $price != 0 && $productPrice < $price) {
                 return false;
