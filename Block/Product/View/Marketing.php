@@ -273,7 +273,7 @@ class Marketing extends Template
 
         foreach (array_unique($childIds) as $childId) {
             try {
-                $child = $this->productRepository->getById($childId);
+                $child = $this->productRepository->getById($childId, false, (int) $product->getStoreId());
                 $childPrice = (float) $child->getFinalPrice();
                 if ($childPrice <= 0) {
                     $childPrice = (float) $child->getPrice();
