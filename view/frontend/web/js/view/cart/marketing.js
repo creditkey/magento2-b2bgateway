@@ -3,9 +3,10 @@
 define(
     [
       'jquery',
-      'creditkeysdk'
+      'creditkeysdk',
+      'CreditKey_B2BGateway/js/view/marketing-url'
     ],
-    function ($, creditKey) {
+    function ($, creditKey, marketingUrl) {
         'use strict';
 
         var globalOptions = {
@@ -30,7 +31,10 @@ define(
                     );
                     var charges = new creditKey.Charges(...config.charges);
 
-                    var res = ckClient.get_cart_display(charges, config.desktop, config.mobile)
+                    var res = marketingUrl.replaceHost(
+                        ckClient.get_cart_display(charges, config.desktop, config.mobile),
+                        config.endpoint
+                    );
                     elem.html(res);
                 }
             }
