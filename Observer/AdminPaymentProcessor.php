@@ -86,31 +86,33 @@ class AdminPaymentProcessor implements ObserverInterface
             }
 
             $billingAddress = $order->getBillingAddress();
+            $billingStreet = $billingAddress ? ($billingAddress->getStreet() ?: []) : [];
             $address = [];
-            $address['first_name'] = $billingAddress->getFirstname();
-            $address['last_name'] = $billingAddress->getLastname();
-            $address['company_name'] = $billingAddress->getCompany();
-            $address['email'] = $billingAddress->getEmail();
-            $address['address1'] = $billingAddress->getStreet(1)[0] ?? '';
-            $address['address2'] = $billingAddress->getStreet(1)[1] ?? '';
-            $address['city'] = $billingAddress->getCity();
-            $address['state'] = $billingAddress->getRegion();
-            $address['zip'] = $billingAddress->getPostcode();
-            $address['phone_number'] = $billingAddress->getTelephone();
+            $address['first_name'] = $billingAddress ? $billingAddress->getFirstname() : '';
+            $address['last_name'] = $billingAddress ? $billingAddress->getLastname() : '';
+            $address['company_name'] = $billingAddress ? $billingAddress->getCompany() : '';
+            $address['email'] = $billingAddress ? $billingAddress->getEmail() : '';
+            $address['address1'] = $billingStreet[0] ?? '';
+            $address['address2'] = $billingStreet[1] ?? '';
+            $address['city'] = $billingAddress ? $billingAddress->getCity() : '';
+            $address['state'] = $billingAddress ? $billingAddress->getRegion() : '';
+            $address['zip'] = $billingAddress ? $billingAddress->getPostcode() : '';
+            $address['phone_number'] = $billingAddress ? $billingAddress->getTelephone() : '';
             $formData['billing_address'] = $address;
 
             $shippingAddress = $order->getShippingAddress();
+            $shippingStreet = $shippingAddress ? ($shippingAddress->getStreet() ?: []) : [];
             $address = [];
-            $address['first_name'] = $shippingAddress->getFirstname();
-            $address['last_name'] = $shippingAddress->getLastname();
-            $address['company_name'] = $shippingAddress->getCompany();
-            $address['email'] = $shippingAddress->getEmail();
-            $address['address1'] = $shippingAddress->getStreet(1)[0] ?? '';
-            $address['address2'] = $shippingAddress->getStreet(1)[1] ?? '';
-            $address['city'] = $shippingAddress->getCity();
-            $address['state'] = $shippingAddress->getRegion();
-            $address['zip'] = $shippingAddress->getPostcode();
-            $address['phone_number'] = $shippingAddress->getTelephone();
+            $address['first_name'] = $shippingAddress ? $shippingAddress->getFirstname() : '';
+            $address['last_name'] = $shippingAddress ? $shippingAddress->getLastname() : '';
+            $address['company_name'] = $shippingAddress ? $shippingAddress->getCompany() : '';
+            $address['email'] = $shippingAddress ? $shippingAddress->getEmail() : '';
+            $address['address1'] = $shippingStreet[0] ?? '';
+            $address['address2'] = $shippingStreet[1] ?? '';
+            $address['city'] = $shippingAddress ? $shippingAddress->getCity() : '';
+            $address['state'] = $shippingAddress ? $shippingAddress->getRegion() : '';
+            $address['zip'] = $shippingAddress ? $shippingAddress->getPostcode() : '';
+            $address['phone_number'] = $shippingAddress ? $shippingAddress->getTelephone() : '';
             $formData['shipping_address'] = $address;
 
             $charge = [];

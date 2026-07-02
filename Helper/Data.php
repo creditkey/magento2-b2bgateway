@@ -87,16 +87,9 @@ class Data
      */
     public function buildAddress($magentoAddress)
     {
-        $street = $magentoAddress->getStreet();
-        $address1 = null;
-        $address2 = null;
-
-        if (count($street) >= 1) {
-            $address1 = $street[0];
-        }
-        if (count($street) >= 2) {
-            $address2 = $street[1];
-        }
+        $street = $magentoAddress->getStreet() ?: [];
+        $address1 = $street[0] ?? null;
+        $address2 = $street[1] ?? null;
 
         return new \CreditKey\Models\Address(
             $magentoAddress->getFirstname(),

@@ -159,7 +159,7 @@ class Config
      */
     public function isPdpMarketingActive()
     {
-        return (boolean)$this->getConfigValue(self::XML_KEY_PDP_MARKETING_ACTIVE);
+        return (bool)$this->getConfigValue(self::XML_KEY_PDP_MARKETING_ACTIVE);
     }
 
     /**
