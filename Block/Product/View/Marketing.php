@@ -4,6 +4,7 @@ namespace CreditKey\B2BGateway\Block\Product\View;
 
 use CreditKey\B2BGateway\Helper\Api;
 use CreditKey\B2BGateway\Helper\Config;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\Registry;
@@ -27,6 +28,11 @@ class Marketing extends Template
      * @var Configurable
      */
     private $configurableProduct;
+
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
 
     /**
      * @var Registry
@@ -74,6 +80,7 @@ class Marketing extends Template
      * @param LoggerInterface $logger
      * @param TaxCalculationInterface $taxCalculation
      * @param Configurable $configurableProduct
+     * @param ProductRepositoryInterface $productRepository
      * @param array $data
      */
     public function __construct(
@@ -85,6 +92,7 @@ class Marketing extends Template
         LoggerInterface $logger,
         TaxCalculationInterface $taxCalculation,
         Configurable $configurableProduct,
+        ProductRepositoryInterface $productRepository,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
@@ -94,6 +102,7 @@ class Marketing extends Template
         $this->logger = $logger;
         $this->taxCalculation = $taxCalculation;
         $this->configurableProduct = $configurableProduct;
+        $this->productRepository = $productRepository;
         parent::__construct($context, $data);
     }
 
@@ -124,15 +133,7 @@ class Marketing extends Template
 
             $price = abs((float) $this->config->getPdpMarketingPrice());
 
-            $productPrice = $product->getPrice();
-            if ($product->getTypeId() == Configurable::TYPE_CODE) {
-                $childProducts = $this->configurableProduct->getUsedProducts($product);
-                foreach ($childProducts as $child) {
-                    if ($child->getPrice() > $productPrice) {
-                        $productPrice = $child->getPrice();
-                    }
-                }
-            }
+            $productPrice = $this->getProductMessagingPrice($product);
 
             if (is_numeric($price) && $price != 0 && $productPrice < $price) {
                 return false;
@@ -181,6 +182,7 @@ class Marketing extends Template
     private function getCharges()
     {
         $product = $this->getProduct();
+        $productPrice = $this->getProductMessagingPrice($product);
 
         $taxClassId = $product->getCustomAttribute('tax_class_id');
         $taxRate = $taxClassId
@@ -188,12 +190,120 @@ class Marketing extends Template
             : 0;
 
         return [
-            $product->getFinalPrice(),
+            $productPrice,
             0, // no quote yet to calc shipping
             $taxRate,
             0, // no quote to apply discount
-            $product->getFinalPrice() + $taxRate
+            $productPrice + $taxRate
         ];
+    }
+
+    /**
+     * Get the amount to send to Credit Key PDP messaging.
+     *
+     * Products that render price ranges, such as configurable products, can
+     * return 0 from getFinalPrice() on the parent product. Prefer Magento's
+     * minimal final price so the SDK receives the lower visible PDP price.
+     *
+     * @param Product $product
+     * @return float
+     */
+    private function getProductMessagingPrice(Product $product)
+    {
+        $minimalPrice = $this->getMinimalFinalPrice($product);
+        if ($minimalPrice > 0) {
+            return $minimalPrice;
+        }
+
+        if ($product->getTypeId() == Configurable::TYPE_CODE) {
+            $childPrice = $this->getLowestChildPrice($product);
+            if ($childPrice > 0) {
+                return $childPrice;
+            }
+        }
+
+        $finalPrice = (float) $product->getFinalPrice();
+        if ($finalPrice > 0) {
+            return $finalPrice;
+        }
+
+        return max(0, (float) $product->getPrice());
+    }
+
+    /**
+     * Get Magento's minimal final price amount, when available.
+     *
+     * @param Product $product
+     * @return float
+     */
+    private function getMinimalFinalPrice(Product $product)
+    {
+        try {
+            $price = $product->getPriceInfo()->getPrice('final_price');
+
+            if (method_exists($price, 'getMinimalPrice')) {
+                return $this->getAmountValue($price->getMinimalPrice());
+            }
+
+            if (method_exists($price, 'getAmount')) {
+                return $this->getAmountValue($price->getAmount());
+            }
+        } catch (\Exception $e) {
+            $this->logger->debug('Unable to resolve Credit Key PDP minimal price: ' . $e->getMessage());
+        }
+
+        return 0;
+    }
+
+    /**
+     * Get the lowest positive child price for configurable products.
+     *
+     * @param Product $product
+     * @return float
+     */
+    private function getLowestChildPrice(Product $product)
+    {
+        $lowestPrice = null;
+        $childIdsByAttribute = $this->configurableProduct->getChildrenIds($product->getId());
+        $childIds = [];
+
+        foreach ($childIdsByAttribute as $ids) {
+            $childIds = array_merge($childIds, $ids);
+        }
+
+        foreach (array_unique($childIds) as $childId) {
+            try {
+                $child = $this->productRepository->getById($childId, false, (int) $product->getStoreId());
+                $childPrice = (float) $child->getFinalPrice();
+                if ($childPrice <= 0) {
+                    $childPrice = (float) $child->getPrice();
+                }
+            } catch (\Exception $e) {
+                $this->logger->debug('Unable to resolve Credit Key PDP child price: ' . $e->getMessage());
+                continue;
+            }
+
+            if ($childPrice > 0 && ($lowestPrice === null || $childPrice < $lowestPrice)) {
+                $lowestPrice = $childPrice;
+            }
+        }
+
+        return $lowestPrice === null ? 0 : $lowestPrice;
+    }
+
+    /**
+     * Extract a numeric value from Magento price amount objects.
+     *
+     * @param mixed $amount
+     * @return float
+     */
+    private function getAmountValue($amount)
+    {
+        if (is_object($amount) && method_exists($amount, 'getValue')) {
+            return (float) $amount->getValue();
+        }
+
+        return (float) $amount;
     }
 
     /**
