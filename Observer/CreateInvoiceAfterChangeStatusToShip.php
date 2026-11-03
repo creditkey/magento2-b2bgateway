@@ -90,7 +90,7 @@ class CreateInvoiceAfterChangeStatusToShip implements ObserverInterface
                 return;
             }
             $paymentMethod = $order->getPayment()->getMethod();
-            if ($paymentMethod == 'creditkey_gateway' || $paymentMethod == 'creditkey_gateway_admin') {
+            if (in_array($paymentMethod, ['creditkey_gateway', 'creditkey_pay_by_bank', 'creditkey_gateway_admin'], true)) {
                 if ($this->configHelper->isEnabledMeetanshiAutoInvShip()) {
                     return;
                 }

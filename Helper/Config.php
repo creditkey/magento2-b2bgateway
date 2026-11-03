@@ -143,7 +143,18 @@ class Config
     }
 
     /**
-     * Get Checkout Minimum Price
+     * Whether both Credit Key and its Pay by Bank option are enabled.
+     *
+     * @return bool
+     */
+    public function isPayByBankEnabled()
+    {
+        return (bool) $this->getConfigValue('/active')
+            && (bool) $this->getConfigValue('/pay_by_bank_enabled');
+    }
+
+    /**
+     * Get the minimum checkout amount shared by both storefront methods.
      *
      * @return string
      */

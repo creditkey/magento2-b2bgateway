@@ -9,11 +9,15 @@
         </policy>
         <policy id="img-src">
             <values>
+                <value id="creditkey-modal-logo" type="host">www.creditkey.com</value>
                 <value id="creditkey-assets-s3" type="host">creditkey-assets.s3-us-west-2.amazonaws.com</value>
             </values>
         </policy>
         <policy id="frame-src">
             <values>
+                <value id="creditkey-paynow" type="host">paynow.creditkey.com</value>
+                <value id="creditkey-paynow-staging" type="host">paynow.staging.creditkey.com</value>
+                <value id="creditkey-paynow-preview" type="host">paynow.preview.creditkey.com</value>
                 <value id="creditkey-checkout" type="host">checkout.creditkey.com</value>
                 <value id="creditkey-checkout-preview" type="host">preview-checkout.creditkey.com</value>
                 <value id="creditkey-checkout-staging" type="host">staging-checkout.creditkey.com</value>

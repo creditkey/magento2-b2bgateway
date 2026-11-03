@@ -16,7 +16,7 @@
         "magento/module-quote": "^101.2",
         "magento/module-customer": "^103.0",
         "magento/module-store": "^101.1",
-        "creditkey/creditkey-php": "^1.0.7"
+        "creditkey/creditkey-php": "^1.0.8"
     },
     "type": "magento2-module",
     "autoload": {

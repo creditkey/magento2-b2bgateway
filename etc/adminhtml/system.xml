@@ -11,6 +11,12 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="pay_by_bank_enabled" translate="label comment" type="checkbox" sortOrder="15"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Pay by Bank</label>
+                    <frontend_model>CreditKey\B2BGateway\Block\Adminhtml\System\Config\PayByBank</frontend_model>
+                    <comment>Adds Pay by Bank at checkout. Uses Credit Key's minimum checkout amount and eligibility rules.</comment>
+                </field>
                 <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
                        showInStore="1">
                     <label>Title</label>
