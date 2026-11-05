@@ -51,7 +51,7 @@ class Order
         try {
             $payment = $subject->getPayment();
             $status = ['complete', 'shipped'];
-            if ($payment && $payment->getMethod() == \CreditKey\B2BGateway\Model\Ui\ConfigProvider::CODE
+            if ($payment && in_array($payment->getMethod(), [\CreditKey\B2BGateway\Model\Ui\ConfigProvider::CODE, \CreditKey\B2BGateway\Model\Ui\ConfigProvider::BANK_CODE], true)
                 && $payment->getAdditionalInformation('ckOrderId')
                 && in_array(
                     $subject->getStatus(),

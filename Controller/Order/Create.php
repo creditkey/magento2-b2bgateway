@@ -22,6 +22,8 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
      */
     private $config;
 
+    private $checkoutMethod;
+
     /**
      * Construct
      *
@@ -46,11 +48,13 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
         \Magento\Customer\Model\Session $customerSession,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\UrlInterface $urlBuilder,
-        \Magento\Framework\App\Request\Http $request
+        \Magento\Framework\App\Request\Http $request,
+        \CreditKey\B2BGateway\Model\CheckoutMethod $checkoutMethod
     ) {
         $this->urlBuilder = $urlBuilder;
         $this->request = $request;
         $this->config = $config;
+        $this->checkoutMethod = $checkoutMethod;
 
         parent::__construct(
             $context,
@@ -70,6 +74,8 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
      */
     public function execute()
     {
+        // Every attempt must reflect the current quote and selected payment method.
+        $this->getResponse()->setNoCacheHeaders();
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $quote = $this->checkoutSession->getQuote();
 
@@ -107,6 +113,7 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
         }
 
         try {
+            $merchantData = $this->checkoutMethod->getMerchantData($quote, $cartContents, $customerId);
             $redirectTo = \CreditKey\Checkout::beginCheckout(
                 $cartContents,
                 $billingAddress,
@@ -117,7 +124,8 @@ class Create extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyControlle
                 $returnUrl,
                 $cancelUrl,
                 '',
-                $mode
+                $mode,
+                $merchantData
             );
 
             $resultRedirect->setUrl($redirectTo);

@@ -54,7 +54,7 @@ class UpdateChargesAfterOrderSave implements ObserverInterface
         $paymentMethod = $order->getPayment()->getMethod();
         $ckOrderId = $payment->getAdditionalInformation('ckOrderId');
 
-        if (!in_array($paymentMethod, ['creditkey_gateway', 'creditkey_gateway_admin']) || !$ckOrderId) {
+        if (!in_array($paymentMethod, ['creditkey_gateway', 'creditkey_pay_by_bank', 'creditkey_gateway_admin']) || !$ckOrderId) {
             return;
         }
 

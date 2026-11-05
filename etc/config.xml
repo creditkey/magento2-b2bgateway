@@ -6,6 +6,7 @@
                 <can_initialize>1</can_initialize>
                 <debug>1</debug>
                 <active>0</active>
+                <pay_by_bank_enabled>0</pay_by_bank_enabled>
                 <checkout_mode>modal</checkout_mode>
                 <model>CreditKey\B2BGateway\Model\PaymentMethodFacade</model>
                 <merchant_gateway_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
@@ -35,6 +36,10 @@
                     <active>0</active>
                 </creditkey_create_invoice_auto>
             </creditkey_gateway>
+            <creditkey_pay_by_bank>
+                <active>1</active>
+                <model>CreditKey\B2BGateway\Model\PayByBankMethodFacade</model>
+            </creditkey_pay_by_bank>
             <creditkey_gateway_admin>
                 <active>0</active>
                 <title>Credit Key - Backend (CSR)</title>

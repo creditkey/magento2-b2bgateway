@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="CreditKey_B2BGateway::css/checkout.css"/>
+    </head>
     <body>
         <referenceBlock name="content">
             <block class="Magento\Framework\View\Element\Messages" name="creditkey.messages" as="messages" template="Magento_Theme::messages.phtml" before="-"/>
@@ -24,6 +27,9 @@
                                                                     <item name="component" xsi:type="string">CreditKey_B2BGateway/js/view/payment/creditkey_gateway</item>
                                                                     <item name="methods" xsi:type="array">
                                                                         <item name="creditkey_gateway" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                        <item name="creditkey_pay_by_bank" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
                                                                         </item>
                                                                     </item>
