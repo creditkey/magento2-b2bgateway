@@ -1,6 +1,6 @@
 {
     "name": "creditkey/b2bgateway",
-    "version": "1.0.73",
+    "version": "1.0.74",
     "description": "Credit Key integration with payment gateway",
     "license": "OSL-3.0",
     "authors": [
