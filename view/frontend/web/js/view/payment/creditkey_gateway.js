@@ -16,6 +16,10 @@ define(
                 component: 'CreditKey_B2BGateway/js/view/payment/method-renderer/creditkey_gateway'
             }
         );
+        rendererList.push({
+            type: 'creditkey_pay_by_bank',
+            component: 'CreditKey_B2BGateway/js/view/payment/method-renderer/creditkey_gateway'
+        });
         /**
     * Add view logic here if needed 
     */

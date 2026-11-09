@@ -13,6 +13,32 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="CreditKey\B2BGateway\Model\PayByBankMethodFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">CreditKey\B2BGateway\Model\Ui\ConfigProvider::BANK_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">CreditKey\B2BGateway\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">CreditKeyBankValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">CreditKey\B2BGateway\Gateway\Command\CommandPool</argument>
+            <argument name="validatorPool" xsi:type="object">CreditKeyValidatorPool</argument>
+            <argument name="canUseInternal" xsi:type="boolean">false</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CreditKeyBankValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">CreditKey\B2BGateway\Gateway\Config\PayByBankValueHandler</item>
+                <item name="can_void" xsi:type="string">CreditKey\B2BGateway\Gateway\Config\CanVoidHandler</item>
+                <item name="can_cancel" xsi:type="string">CreditKey\B2BGateway\Gateway\Config\CanVoidHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="CreditKey\B2BGateway\Gateway\Config\PayByBankValueHandler">
+        <arguments>
+            <argument name="config" xsi:type="object">CreditKeyB2BGatewayConfig</argument>
+        </arguments>
+    </type>
+
     <!-- Validator pool -->
     <virtualType name="CreditKeyValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
         <arguments>

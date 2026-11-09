@@ -1,134 +1,98 @@
 /*browser:true*/
 /*global define*/
-define(
-    [
-      'jquery',
-      'Magento_Checkout/js/view/payment/default',
-      'Magento_Checkout/js/action/place-order',
-      'Magento_Checkout/js/action/select-payment-method',
-      'Magento_Checkout/js/checkout-data',
-      'Magento_Checkout/js/model/payment/additional-validators',
-      'Magento_Checkout/js/action/set-payment-information',
-      'Magento_Checkout/js/model/quote',
-      'Magento_SalesRule/js/model/payment/discount-messages',
-      'Magento_Customer/js/model/customer',
-      'creditkeysdk',
-      'CreditKey_B2BGateway/js/jquery.livequery.min'
-    ],
-    function ($, Component, placeOrderAction, selectPaymentMethodAction, checkoutData, additionalValidators, setPaymentInformation, quote, messageContainer, customerModel, creditKey) {
-        'use strict';
+define([
+    'jquery',
+    'Magento_Checkout/js/view/payment/default',
+    'Magento_Checkout/js/action/select-payment-method',
+    'Magento_Checkout/js/checkout-data',
+    'Magento_Checkout/js/model/payment/additional-validators',
+    'Magento_Checkout/js/action/set-payment-information',
+    'creditkeysdk',
+    'CreditKey_B2BGateway/js/jquery.livequery.min'
+], function ($, Component, selectPaymentMethodAction, checkoutData, additionalValidators,
+    setPaymentInformation, creditKey) {
+    'use strict';
 
-        var originalOrderButton, originalOrderButtonVal;
-        var data = window.checkoutConfig.payment.creditkey_gateway;
-        var ckClient = new creditKey.Client(data.publicKey, data.endpoint);
+    var config = window.checkoutConfig.payment.creditkey_gateway;
+    // Both methods use the same merchant and API environment.
+    new creditKey.Client(config.publicKey, config.endpoint);
 
-        quote.paymentMethod.subscribe(
-            function (method) {
-                if (typeof originalOrderButton !== 'undefined') {
-                    if (method.method === 'creditkey_gateway') {
-                        originalOrderButton.html('<span data-bind="i18n: \'Continue with Credit Key\'">Continue with Credit Key</span>');
-                    } else {
-                        originalOrderButton.html(originalOrderButtonVal);
-                    }
+    window.addEventListener('message', function (event) {
+        if (event.origin === window.location.origin && event.data &&
+            event.data.event === 'creditkey_b2b_gateway' && event.data.action === 'closePopup') {
+            var modal = document.getElementById('creditkey-modal');
+            setTimeout(function () {
+                if (modal) {
+                    modal.remove();
                 }
-            }, null, 'change'
-        );
+            }, 5000);
+        }
+    });
 
-        return Component.extend(
-            {
-                defaults: {
-                    template: 'CreditKey_B2BGateway/payment/form',
-                    transactionResult: ''
-                },
+    return Component.extend({
+        defaults: {
+            template: 'CreditKey_B2BGateway/payment/form',
+            redirectAfterPlaceOrder: false
+        },
 
-                initObservable: function () {
-                    this._super();
+        getCode: function () {
+            return this.item.method;
+        },
 
-                    window.addEventListener('message', function (event) {
-                        if (event.origin !== window.location.origin) {
-                            return;
-                        }
+        getMethodConfig: function () {
+            return window.checkoutConfig.payment[this.getCode()];
+        },
 
-                        if (event.data.event === 'creditkey_b2b_gateway' && event.data.action === 'closePopup') {
-                            window.addEventListener('message', function (event) {
-                                if (event.origin !== window.location.origin) {
-                                    return;
-                                }
+        getTitle: function () {
+            return this.getCode() === 'creditkey_pay_by_bank' ? 'Pay by Bank' : 'Pay Over Time';
+        },
 
-                                if (event.data.event === 'creditkey_b2b_gateway' && event.data.action === 'closePopup') {
-                                    setTimeout(() => {
-                                        document.getElementById('creditkey-modal').remove();
-                                    }, 5000);
-                                }
-                            });
-                        }
+        getSubtitle: function () {
+            return this.getCode() === 'creditkey_pay_by_bank' ?
+                'Pay directly from your bank account' : 'Net 30 or monthly payments';
+        },
+
+        getPaymentAcceptanceMarkSrc: function () {
+            return this.getMethodConfig().assetSrc;
+        },
+
+        isDisplayed: function () {
+            return this.getMethodConfig().isCreditKeyDisplayed;
+        },
+
+        getData: function () {
+            return {method: this.getCode()};
+        },
+
+        redirectToPayment: function () {
+            var data = this.getMethodConfig(), self = this;
+            if (this.isPlaceOrderActionAllowed() && this.validate() && additionalValidators.validate()) {
+                // Persist the selected method before the server decides whether to send pay_now.
+                this.isPlaceOrderActionAllowed(false);
+                return setPaymentInformation(this.messageContainer, {method: this.getCode()}).then(function () {
+                    // The SDK reuses hidden modals for identical URLs. Both methods share
+                    // this route, so discard the previous flow after saving the selection.
+                    var modal = document.getElementById('creditkey-modal');
+                    if (modal) {
+                        modal.remove();
+                    }
+                    var checkoutUrl = data.redirectUrl + (data.redirectUrl.indexOf('?') === -1 ? '?' : '&') +
+                        '_ck_attempt=' + Date.now();
+                    creditKey.checkout(checkoutUrl, data.checkoutMode);
+                    $('#creditkey-iframe').livequery(function () {
+                        $(this).attr('scrolling', 'yes');
                     });
-
-                    return this;
-                },
-
-                getPaymentAcceptanceMarkSrc: function () {
-                    return window.checkoutConfig.payment.creditkey_gateway.assetSrc;
-                },
-
-                getCode: function () {
-                    return 'creditkey_gateway';
-                },
-
-                getData: function () {
-                    return {
-                        'method': this.item.method,
-                        'additional_data': {
-                            'transaction-result': ''
-                        }
-                    }
-                },
-
-                getCustomTitle: function () {
-                    var totals = quote.getTotals()();
-                    var charges = new creditKey.Charges(
-                        totals.subtotal,
-                        totals.base_shipping_amount,
-                        totals.base_tax_amount,
-                        totals.base_discount_amount,
-                        totals.base_grand_total
-                    );
-                    originalOrderButton = $('.checkout.primary, .btn-proceed-checkout').last().last();
-                    originalOrderButtonVal = originalOrderButton.html();
-                },
-
-                isDisplayed: function () {
-                    var data = window.checkoutConfig.payment.creditkey_gateway;
-                    return data.isCreditKeyDisplayed;
-                },
-
-                redirectToPayment: function () {
-                    // validate the form
-                    if (this.validate() && additionalValidators.validate()) {
-                        var checkoutMode = window.checkoutConfig.payment.creditkey_gateway.checkoutMode;
-                        // if valide then we call our checkout modal
-                        setPaymentInformation(messageContainer, { method: quote.paymentMethod().method })
-                        .then(
-                            function () {
-                                creditKey.checkout(data.redirectUrl, checkoutMode);
-                                $('#creditkey-iframe').livequery(
-                                    function () {
-                                        $('#creditkey-iframe').attr('scrolling','yes');
-                                    }
-                                );
-                            }
-                        );
-                    }
-                },
-
-                redirectAfterPlaceOrder: false,
-
-                selectPaymentMethod: function () {
-                    selectPaymentMethodAction(this.getData());
-                    checkoutData.setSelectedPaymentMethod(this.item.method);
-                    return true;
-                }
+                }).always(function () {
+                    self.isPlaceOrderActionAllowed(true);
+                });
             }
-        );
-    }
-);
+            return false;
+        },
+
+        selectPaymentMethod: function () {
+            selectPaymentMethodAction(this.getData());
+            checkoutData.setSelectedPaymentMethod(this.getCode());
+            return true;
+        }
+    });
+});

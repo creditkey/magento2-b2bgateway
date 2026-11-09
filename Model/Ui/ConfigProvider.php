@@ -4,6 +4,7 @@ namespace CreditKey\B2BGateway\Model\Ui;
 class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
 {
     const CODE = 'creditkey_gateway';
+    const BANK_CODE = 'creditkey_pay_by_bank';
 
     /**
      * @var \Magento\Checkout\Model\Cart
@@ -94,16 +95,21 @@ class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
             /* swallow any exception, and don't display the CK option */
         }
 
+        $paymentConfig = [
+            'endpoint' => $this->config->getEndpoint(),
+            'assetSrc' => $this->assetRepo->getUrl('CreditKey_B2BGateway::images/credit-key-logo.svg'),
+            'redirectUrl' => $this->urlBuilder->getUrl('creditkey_gateway/order/create'),
+            'publicKey' => $this->config->getPublicKey(),
+            'checkoutMode' => $this->config->getCheckoutMode(),
+            'isCreditKeyDisplayed' => $isCreditKeyDisplayed
+        ];
+
         return [
             'payment' => [
-                self::CODE => [
-                    'endpoint' => $this->config->getEndpoint(),
-                    'assetSrc' => $this->assetRepo->getUrl("CreditKey_B2BGateway::images/ck-logo-new.svg"),
-                    'redirectUrl' => $this->urlBuilder->getUrl('creditkey_gateway/order/create'),
-                    'publicKey' => $this->config->getPublicKey(),
-                    'checkoutMode' => $this->config->getCheckoutMode(),
-                    'isCreditKeyDisplayed' => $isCreditKeyDisplayed
-                ]
+                self::CODE => $paymentConfig,
+                self::BANK_CODE => array_merge($paymentConfig, [
+                    'isCreditKeyDisplayed' => $isCreditKeyDisplayed && $this->config->isPayByBankEnabled()
+                ])
             ]
         ];
     }
