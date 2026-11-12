@@ -1,16 +1,4 @@
-.checkout-payment-method .creditkey-payment-method { display: none; border: 1px solid #d8ddd4; margin: 0 0 12px; }
-.checkout-payment-method .creditkey-payment-method.visible { display: block; }
-.checkout-payment-method .creditkey-payment-method._active { border-color: #0066ff; }
-.checkout-payment-method .creditkey-payment-method .payment-method-title { display: flex; align-items: center; padding: 10px; border: 0; gap: 16px; }
-.checkout-payment-method .creditkey-payment-method .payment-method-title .radio { flex: 0 0 auto; margin: 0; width: 24px; height: 24px; accent-color: #0066ff; }
-.checkout-payment-method .creditkey-payment-method .payment-method-title .label { display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; margin: 0; min-width: 0; }
-.creditkey-payment-copy { display: flex; flex-direction: column; gap: 4px; color: #383f34; }
-.creditkey-payment-title { font-size: 16px; font-weight: 600; line-height: 1.3; }
-.creditkey-payment-subtitle { font-size: 13px; line-height: 1.4; }
-.creditkey-payment-logo { width: 132px; height: auto; flex: 0 0 auto; }
-.checkout-payment-method .creditkey-payment-method .payment-method-content { padding: 0 10px 10px; }
-.checkout-payment-method .creditkey-payment-method .action.primary.checkout { background-color: #0066ff; border-color: #0066ff; }
-@media (max-width: 600px) {
-    .checkout-payment-method .creditkey-payment-method .payment-method-title { gap: 10px; }
-    .checkout-payment-method .creditkey-payment-method .payment-method-title .label { gap: 10px; flex-wrap: wrap; }
-}
+/* Availability is controlled by the payment renderer; appearance belongs to the theme. */
+.checkout-payment-method .creditkey-payment-method:not(.visible) { display: none; }
+.creditkey-payment-copy { display: inline-flex; flex-direction: column; max-width: 100%; vertical-align: middle; }
+.creditkey-payment-logo { width: 132px; max-width: 100%; height: auto; margin-inline-start: 0.75em; vertical-align: middle; }

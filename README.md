@@ -26,7 +26,7 @@ Payment Action can be set to ```Authorize``` or ```Authorize and Capture```. ```
 
 Requires `creditkey/creditkey-php ^1.0.8`. In **Stores > Configuration > Sales > Payment Methods > Credit Key (Gateway)**, check **Enable Pay by Bank** and save. The checkbox defaults to off and supports website/store inheritance.
 
-Checkout displays **Pay Over Time** and, when enabled, **Pay by Bank** with the description **Pay directly from your bank account**. Both use the bundled Credit Key logo. Pay Over Time currently uses “Net 30 or monthly payments”; no fixed monthly quote is advertised.
+Checkout displays **Pay Over Time** and, when enabled, **Pay by Bank** with the description **Pay directly from your bank account**. Both use the bundled Credit Key logo. Both payment methods inherit the store theme’s checkout typography, radio buttons, borders, spacing, and button styling. The module only adds layout for the title/subtitle and a responsive logo; merchants can override these styles in their theme. Pay Over Time currently uses “Net 30 or monthly payments”; no fixed monthly quote is advertised.
 
 Pay by Bank inherits Credit Key's enabled status, minimum checkout price, applicable countries, API eligibility, credentials, checkout mode, payment action, and order-processing commands. It is a storefront method (`creditkey_pay_by_bank`); the existing CSR method remains separate. Pay by Bank orders retain their method code for capture, refund, shipment, and order-total updates.
 
