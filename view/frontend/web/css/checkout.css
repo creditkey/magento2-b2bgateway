@@ -1,4 +1,5 @@
 /* Availability is controlled by the payment renderer; appearance belongs to the theme. */
 .checkout-payment-method .creditkey-payment-method:not(.visible) { display: none; }
 .creditkey-payment-copy { display: inline-flex; flex-direction: column; max-width: 100%; vertical-align: middle; }
-.creditkey-payment-logo { width: 132px; max-width: 100%; height: auto; margin-inline-start: 0.75em; vertical-align: middle; }
+.creditkey-payment-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5em; }
+.creditkey-payment-logo { width: 132px; max-width: 100%; height: auto; }

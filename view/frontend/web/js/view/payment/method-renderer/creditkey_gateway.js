@@ -44,7 +44,7 @@ define([
         },
 
         getTitle: function () {
-            return this.getCode() === 'creditkey_pay_by_bank' ? 'Pay by Bank' : 'Pay Over Time';
+            return this.getCode() === 'creditkey_pay_by_bank' ? 'Pay by Bank with' : 'Pay Over Time with';
         },
 
         getSubtitle: function () {
