@@ -3,6 +3,4 @@
 .checkout-payment-method .creditkey-payment-method .payment-method-title { display: flex; align-items: center; gap: 0.6em; }
 .checkout-payment-method .creditkey-payment-method .payment-method-title .radio { flex: 0 0 auto; margin: 0; }
 .checkout-payment-method .creditkey-payment-method .payment-method-title .label { min-width: 0; }
-.creditkey-payment-copy { display: inline-flex; flex-direction: column; max-width: 100%; vertical-align: middle; }
-.creditkey-payment-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5em; }
-.creditkey-payment-logo { width: auto; max-width: 100%; height: 23px; flex: 0 0 auto; }
+.creditkey-payment-logo { display: block; width: auto; max-width: 100%; height: auto; }

@@ -97,7 +97,7 @@ class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
 
         $paymentConfig = [
             'endpoint' => $this->config->getEndpoint(),
-            'assetSrc' => $this->assetRepo->getUrl('CreditKey_B2BGateway::images/credit-key-logo.svg'),
+            'assetSrc' => $this->assetRepo->getUrl('CreditKey_B2BGateway::images/credit_key_pay_over_time.svg'),
             'redirectUrl' => $this->urlBuilder->getUrl('creditkey_gateway/order/create'),
             'publicKey' => $this->config->getPublicKey(),
             'checkoutMode' => $this->config->getCheckoutMode(),
@@ -108,6 +108,7 @@ class ConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
             'payment' => [
                 self::CODE => $paymentConfig,
                 self::BANK_CODE => array_merge($paymentConfig, [
+                    'assetSrc' => $this->assetRepo->getUrl('CreditKey_B2BGateway::images/credit_key_pay_by_bank.svg'),
                     'isCreditKeyDisplayed' => $isCreditKeyDisplayed && $this->config->isPayByBankEnabled()
                 ])
             ]
