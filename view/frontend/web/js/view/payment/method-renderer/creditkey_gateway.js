@@ -44,12 +44,8 @@ define([
         },
 
         getTitle: function () {
-            return this.getCode() === 'creditkey_pay_by_bank' ? 'Pay by Bank' : 'Pay Over Time';
-        },
-
-        getSubtitle: function () {
             return this.getCode() === 'creditkey_pay_by_bank' ?
-                'Pay directly from your bank account' : 'Net 30 or monthly payments';
+                'Credit Key — BUSINESS Pay by Bank' : 'Credit Key — BUSINESS Pay Over Time';
         },
 
         getPaymentAcceptanceMarkSrc: function () {
