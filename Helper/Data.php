@@ -64,7 +64,7 @@ class Data
     {
         $cartContents = [];
         foreach ($holder->getAllVisibleItems() as $item) {
-            $productId = (int)$item->getItemId();
+            $productId = (int)$item->getProductId();
             $name = $item->getName();
             $price = (float)$item->getPrice();
             $sku = $item->getSku();
