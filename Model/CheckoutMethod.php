@@ -14,9 +14,13 @@ class CheckoutMethod
         if (!in_array($code, [ConfigProvider::CODE, ConfigProvider::BANK_CODE], true)
             || !$payment->getMethodInstance()->isAvailable($quote)
             || !$payment->getMethodInstance()->canUseForCountry($quote->getBillingAddress()->getCountryId())
-            || !\CreditKey\Checkout::isDisplayedInCheckout($cartContents, $customerId)) {
+            || !$this->isDisplayedInCheckout($cartContents, $customerId)) {
             throw new LocalizedException(__('Credit Key is not available for this checkout.'));
         }
         return $code === ConfigProvider::BANK_CODE ? ['pay_now' => true] : null;
+    }
+    protected function isDisplayedInCheckout($cartContents, $customerId)
+    {
+        return \CreditKey\Checkout::isDisplayedInCheckout($cartContents, $customerId);
     }
 }

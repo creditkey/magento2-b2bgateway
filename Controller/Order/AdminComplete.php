@@ -63,7 +63,7 @@ class AdminComplete extends \CreditKey\B2BGateway\Controller\AbstractCreditKeyCo
     /**
      * Execute the cancel action
      *
-     * @return $this
+     * @return void
      */
     public function execute()
     {

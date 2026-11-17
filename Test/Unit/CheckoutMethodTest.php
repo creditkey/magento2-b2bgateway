@@ -1,22 +1,15 @@
 <?php
+namespace CreditKey\B2BGateway\Test\Unit;
+
 use CreditKey\B2BGateway\Model\CheckoutMethod;
 use CreditKey\B2BGateway\Model\Ui\ConfigProvider;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
-#[RunTestsInSeparateProcesses]
-#[PreserveGlobalState(false)]
-final class CheckoutMethodTest extends TestCase
+class CheckoutMethodTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        require __DIR__ . '/Fixture/Checkout.php';
-    }
-
     private function quote($code, $available = true, $countryAllowed = true): DataObject
     {
         $method = new class($available, $countryAllowed) {
@@ -35,11 +28,20 @@ final class CheckoutMethodTest extends TestCase
         return [[ConfigProvider::CODE, null], [ConfigProvider::BANK_CODE, ['pay_now' => true]]];
     }
 
+    /**
+     * @dataProvider methods
+     */
     #[DataProvider('methods')]
     public function testOnlyBankCheckoutAddsBooleanPayNow($code, $expected): void
     {
-        $this->assertSame($expected, (new CheckoutMethod())->getMerchantData($this->quote($code), ['cart'], 'customer'));
-        $this->assertSame([[['cart'], 'customer']], \CreditKey\Checkout::$calls);
+        $checkoutMethod = $this->getMockBuilder(CheckoutMethod::class)
+            ->onlyMethods(['isDisplayedInCheckout'])
+            ->getMock();
+        $checkoutMethod->expects($this->once())
+            ->method('isDisplayedInCheckout')
+            ->with(['cart'], 'customer')
+            ->willReturn(true);
+        $this->assertSame($expected, $checkoutMethod->getMerchantData($this->quote($code), ['cart'], 'customer'));
     }
 
     public static function codes(): array
@@ -47,14 +49,23 @@ final class CheckoutMethodTest extends TestCase
         return [[ConfigProvider::CODE], [ConfigProvider::BANK_CODE]];
     }
 
+    /**
+     * @dataProvider codes
+     */
     #[DataProvider('codes')]
     public function testEligibilityDenialBlocksBothMethods($code): void
     {
-        \CreditKey\Checkout::$eligible = false;
+        $checkoutMethod = $this->getMockBuilder(CheckoutMethod::class)
+            ->onlyMethods(['isDisplayedInCheckout'])
+            ->getMock();
+        $checkoutMethod->expects($this->once())->method('isDisplayedInCheckout')->willReturn(false);
         $this->expectException(LocalizedException::class);
-        (new CheckoutMethod())->getMerchantData($this->quote($code), [], null);
+        $checkoutMethod->getMerchantData($this->quote($code), [], null);
     }
 
+    /**
+     * @dataProvider codes
+     */
     #[DataProvider('codes')]
     public function testUnavailableMethodCannotStartCheckout($code): void
     {
@@ -62,6 +73,9 @@ final class CheckoutMethodTest extends TestCase
         (new CheckoutMethod())->getMerchantData($this->quote($code, false), [], null);
     }
 
+    /**
+     * @dataProvider codes
+     */
     #[DataProvider('codes')]
     public function testCountryRestrictionBlocksBothMethods($code): void
     {

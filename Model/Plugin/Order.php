@@ -48,6 +48,7 @@ class Order
      */
     public function afterAfterSave(\Magento\Sales\Model\Order $subject, $result)
     {
+        $ckOrderId = null;
         try {
             $payment = $subject->getPayment();
             $status = ['complete', 'shipped'];
@@ -70,8 +71,7 @@ class Order
                     $subject->getIncrementId(),
                     'shipped',
                     $cartContents,
-                    $charges,
-                    null
+                    $charges
                 );
                 $this->logger->info(__('Change status for %1 order to shipped successfully', $ckOrderId));
             }
