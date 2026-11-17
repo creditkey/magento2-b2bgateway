@@ -1,4 +1,6 @@
 <?php
+namespace CreditKey\B2BGateway\Test\Unit;
+
 use CreditKey\B2BGateway\Gateway\Config\PayByBankValueHandler;
 use CreditKey\B2BGateway\Helper\Config;
 use CreditKey\B2BGateway\Model\CheckoutMethod;
@@ -12,13 +14,16 @@ use Magento\Payment\Gateway\ConfigInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class PayByBankTest extends TestCase
+class PayByBankTest extends TestCase
 {
     public static function activeCases(): array
     {
         return [[0, 0, false], [0, 1, false], [1, 0, false], [1, 1, true]];
     }
 
+    /**
+     * @dataProvider activeCases
+     */
     #[DataProvider('activeCases')]
     public function testBankRequiresBothTogglesAtTheRequestedStore($active, $enabled, $expected): void
     {
@@ -60,6 +65,9 @@ final class PayByBankTest extends TestCase
         return $cases;
     }
 
+    /**
+     * @dataProvider minimumCases
+     */
     #[DataProvider('minimumCases')]
     public function testBothMethodsShareMinimumAmount($code, $total, $minimum, $expected): void
     {
